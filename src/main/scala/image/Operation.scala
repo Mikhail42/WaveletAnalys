@@ -127,11 +127,11 @@ object Operation {
   
   /** @return mat<<16 + mat<<8 + mat 
    **/
-  def toImage(mat: MInt, imgType: Int = Input.imgType): BI = 
+  def toImage(mat: MInt, imgType: Int = Input.defaultImgType): BI = 
     Operation.createImage(mat, imgType)
   
   /** @see this.toImage */
-  def matrixToImage(mat: M, imgType: Int = Input.imgType): BI = 
+  def matrixToImage(mat: M, imgType: Int = Input.defaultImgType): BI = 
     toImage(Operation.toColorMInt(mat), imgType)
   
   /** @see #basic.MathToolKit.correlation */

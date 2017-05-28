@@ -1,9 +1,9 @@
 package tests
 
 object Base {
-  val dir = "/home/mio/Pictures/" //Documents/Диплом/Интернет/Базы изображений/PIC/Новая папка/"
-  val forVessel = "jOWcUZSs78M.jpg" //2
-  val forDisk = "126.jpg"
+  val dir = "/media/mio/Windows/Универ. Диплом/Интернет/Базы изображений/PIC/Новая папка/" //"/home/mio/Pictures/" //Documents/Диплом/"
+  val forVessel = "2.jpg" //2//"image_023.jpg" //
+  val forDisk = "126.jpg" //"image_023.jpg" //""
   val forTiff = "01_g.tif"
   val forComp1 = "02_dr_out.jpg"
   val forComp2 = "02_dr.tif"

@@ -28,9 +28,9 @@ object Generate {
         else  min(picture(y)(x), 255)
     if (isVisible){
       val gRes: MInt = Operation.toColorMInt(picture)
-      val grayImg: BI = Operation.toImage(gRes, Input.imgType)
+      val grayImg: BI = Operation.toImage(gRes, Input.defaultImgType)
       Output.visible(grayImg, "outImg")
-      Output.saveImage(grayImg, s"${dir}outGenerateImg.jpg", Input.format)
+      Output.saveImage(grayImg, s"${dir}outGenerateImg.jpg", Input.defaultFormat)
     }
     picture
   }
@@ -44,7 +44,7 @@ object Generate {
       for (x <- 0 until n)
         mat(y)(x) = col
     }
-    Output.saveImage(mat, s"${dir}colors.jpg", Input.format, 5)
+    Output.saveImage(mat, s"${dir}colors.jpg", Input.defaultFormat, 5)
   }
   
   def generateImageMat(amplit: T, freq: T, w: Int, h: Int): BI = {
@@ -55,6 +55,6 @@ object Generate {
         if (abs(y - A - amplit*sin(x/freq)) < 6) 255-A
         else min(picture(y)(x), 255)
     val gRes: MInt = Operation.toColorMInt(picture)
-    Operation.createImage(gRes, Input.imgType)
+    Operation.createImage(gRes, Input.defaultImgType)
   }
 }

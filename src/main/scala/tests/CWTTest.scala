@@ -24,7 +24,7 @@ object CWTTest {
       cwt(new Gauss)
       //cwt(new AsVessel(3, a))
       cwt(new MHAT(3, a))
-      //cwt(new FHAT(3, a))
+      //cwt(new F800.0HAT(3, a))
       //cwt(new Gabor)
     }
   }

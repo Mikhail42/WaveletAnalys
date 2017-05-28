@@ -17,23 +17,23 @@ object ImageTest {
     val name = dir + forDirection
     val img = Input.getImage(name) 
     val direct: BI = Analys.direction(img)
-    Output.saveImage(direct, s"${name}_field_out.jpg", Input.format)
+    Output.saveImage(direct, s"${name}_field_out.jpg", Input.defaultFormat)
   }
   
   /** test load, scale and visible .tif image */
-   def imageTifTest {
+   def loadTiffTest {
     val name = dir + forTiff
-    val img: BI = Input.getTifImage(name)
+    val img: BI = Input.getTiffImage(name)
     val resImg = Operation.scale(img, 1000.0/img.getWidth)
     Output.visible(resImg, "Test load a tif image")
   }
   
   /** compare two gray images. 2th image is ideal, 1th -- is my result */
-  def compareTest {
+  def compareGrayWithTiffTest {
     val imgWT = Input.getImage(dir+forComp1)
     val resWt = Operation.toBinary(imgWT)
     
-    val imgTif: BI = Input.getTifImage(dir+forComp2)
+    val imgTif: BI = Input.getTiffImage(dir+forComp2)
     
     val resCompare = Analys.compareBinaryImages(resWt, imgTif)
     println(s"Compare Image Test: result = $resCompare")
