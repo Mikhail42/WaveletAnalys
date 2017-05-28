@@ -1,4 +1,4 @@
-package imageT
+package image
 
 object Constants {
   private val resourcesDirectory = new java.io.File("src/main/resources")

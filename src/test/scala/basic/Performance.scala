@@ -1,4 +1,4 @@
-package mainT
+package basic
 
 import org.scalameter.api._
 

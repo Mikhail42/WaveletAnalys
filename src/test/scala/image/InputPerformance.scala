@@ -1,4 +1,4 @@
-package imageT
+package image
 
 import org.scalameter.api._
 import Constants._
