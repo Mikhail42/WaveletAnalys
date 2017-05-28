@@ -67,7 +67,7 @@ object AnalysTest {
   def diskTest {
     val fileName = dir + forDisk
     val img = image.Input.getImage(fileName)
-    val res = accentuation.Disk.accent(img, r = 8)
+    val res = accentuation.Disk.emphasis(img, r = 8)
     image.Output.visible(res, "Disc Test")
   }
 }
