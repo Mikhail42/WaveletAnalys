@@ -66,8 +66,12 @@ object AnalysTest {
   /** disk accentuation test */
   def diskTest {
     val fileName = dir + forDisk
+    println(fileName)
     val img = image.Input.getImage(fileName)
-    val res = accentuation.Disk.emphasis(img, r = 8)
-    image.Output.visible(res, "Disc Test")
+    for (r <- 2 to 25 by 2) {
+      val res = accentuation.Disk.emphasis(img, r)
+      val res2 = preprocessing.Filter.inverse(res)
+      image.Output.visible(res2, "Disc Test" + r)
+    }
   }
 }
