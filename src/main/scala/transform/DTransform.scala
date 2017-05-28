@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage
 import math._
 import scala.collection.mutable.ArraySeq
 import scala.collection.immutable.IndexedSeq
-import basic.Basic._
+import main.Basic._
 import image._
 
 object DTransform  {

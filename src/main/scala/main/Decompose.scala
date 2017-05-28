@@ -1,7 +1,7 @@
-package basic
+package main
 
 import math._
-import basic.Basic._
+import main.Basic._
 import scala.annotation.tailrec
 
 /** some math methods

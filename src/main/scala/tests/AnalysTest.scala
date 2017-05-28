@@ -3,7 +3,7 @@ package tests
 import math._
 
 import Base._
-import basic.Basic._
+import main.Basic._
 import image._
 
 object AnalysTest {
@@ -37,7 +37,7 @@ object AnalysTest {
         //TODO:
         Output.visible(res._1, "WT")
         printlnTime("WT succesful")
-        val out = preprocessing.Filter.deleteError(res._1, 2)
+        val out = res._1
         printlnTime("delete error succesful")
         //val outInv = preprocessing.Filtr.inverse(out)
         //val delEr = preprocessing.DilateErose.eroseDilete(outInv)

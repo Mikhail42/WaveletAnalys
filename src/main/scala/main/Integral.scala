@@ -1,5 +1,5 @@
-package basic
-import basic.Basic._
+package main
+import main.Basic._
 
 object Integral {
   

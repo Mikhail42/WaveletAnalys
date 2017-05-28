@@ -1,4 +1,5 @@
-package basic
+package main
+
 import math._
 
 object Basic {
@@ -11,6 +12,9 @@ object Basic {
   def toColorInt(x: Int) = x.toInt.max(0).min(255)
   type B = Boolean
   type BI = java.awt.image.BufferedImage
+  
+  def deltaX(r: Int, theta: T): Int = (r*cos(theta)).round.toInt
+  def deltaY(r: Int, theta: T): Int = (r*sin(theta)).round.toInt
   
   val colorId = 2
 
@@ -29,19 +33,8 @@ object Basic {
   def matToImg(mat: MInt, biType: Int): BI = 
     image.Operation.toImage(mat, biType)
     
-  import basic.Constants._
-  def deltaX(r: Int, theta: Int): Int = 
-    (r*coss(theta)).round.toInt
-  def deltaY(r: Int, theta: Int): Int =
-    (r*sins(theta)).round.toInt
-  def sqr(x: Int) = x*x
-  def sqr(x: T) = x*x
-  def maxM(mat: MInt) = mat.map{_.max}.max
-  def minM(mat: MInt) = mat.map{_.min}.min
-  def maxM(mat: M) = mat.map{_.max}.max
-  def minM(mat: M) = mat.map{_.min}.min
-  //import Numeric.Implicits._
-  //def sqr[A: Numeric](a: A): A = a * a
+  def sqr(a: T): T = a * a
+  def sqr(a: Int): Int = a * a
   
   def norm2(x: T, y: T) = sqr(x) + sqr(y)
   def pow4(x: T) = sqr(sqr(x))

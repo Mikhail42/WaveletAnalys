@@ -1,8 +1,8 @@
-package test
+package mainT
 
 import org.scalameter.api._
 
-object RangeBenchmark extends Bench.LocalTime {
+object Performance extends Bench.LocalTime {
     val sizes = Gen.range("size")(3000, 15000, 30000)
   
     val ranges = for {

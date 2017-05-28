@@ -1,16 +1,27 @@
-package basic
+package main
 
 import math._
-import basic.Basic._
+import main.Basic._
 
 /** For test see [[test.StatisticSpec]]
  */
 object Statistic {
 
   /** approximate in 2 times faster then simple min and max cuncurently */
-  def minMax(mat: M): (T, T) = {
-    var min: T = mat(0)(0)
-    var max: T = mat(0)(0)
+  def minMax(mat: M) = {
+    var min = mat(0)(0)
+    var max = mat(0)(0)
+    for (str <- mat; x <- str) {
+      if (x < min) min = x
+      else if (x > max) max = x
+    }
+    (min, max)
+  }
+
+  /** approximate in 2 times faster then simple min and max cuncurently */
+  def minMax(mat: MInt) = {
+    var min = mat(0)(0)
+    var max = mat(0)(0)
     for (str <- mat; x <- str) {
       if (x < min) min = x
       else if (x > max) max = x
@@ -202,8 +213,8 @@ object Statistic {
    *  @see @{link #localEX} and @{link #localEX2}
    */
   def localDisp(mat: MInt, sy: Int, sx: Int): MInt = {
-    val ex = localEX(mat, sy, sx)
-    val ex2 = localEX2(mat, sy, sx)
+    val ex: MInt = localEX(mat, sy, sx)
+    val ex2: MInt = localEX2(mat, sy, sx)
     val m = mat.length; val n = mat(0).length
     val res = createMInt(m, n)
     for (i <- 0 until m; j <- 0 until n)

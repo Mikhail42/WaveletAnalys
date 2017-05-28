@@ -1,7 +1,7 @@
 package wavelets
 
 import math._
-import basic.Basic._
+import main.Basic._
 
 class Gauss extends ICWavelet {
   override val wavename = "Gauss"

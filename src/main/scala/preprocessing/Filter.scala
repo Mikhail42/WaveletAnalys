@@ -1,9 +1,11 @@
 package preprocessing
 
-import basic.Basic._
+import main.Basic._
 import math._
 
 object Filter {
+  val MAX = 255
+  val MIN = 0
 
   def histogramFilterMin(img: BI): BI = {
     val ind = image.Analys.minHistogram(img)
@@ -20,55 +22,31 @@ object Filter {
     val mat = imgToMInt(img)
     for (i <- 0 until mat.length; j <- 0 until mat(0).length)
       mat(i)(j) =
-        if (mat(i)(j) < ind1) 0
-        else if (mat(i)(j) > ind2) 255
-        else 255 * mat(i)(j) / (ind2 - ind1)
+        if (mat(i)(j) < ind1) MIN
+        else if (mat(i)(j) > ind2) MAX
+        else MAX * mat(i)(j) / (ind2 - ind1)
     intMatToImg(mat)
   }
 
-  def deleteError(mat: MInt, r: Int): MInt = {
-    val m = mat.length; val n = mat(0).length
-    val S = sqr(2 * r + 1)
-    val res = createMInt(m, n)
-    for (i <- r until m - r; j <- r until n - r)
-      res(i)(j) = {
-        var sum = 0
-        for (y <- -r to r; x <- -r to r)
-          sum += mat(i + y)(j + x)
-        if (sum < S * 60) 0 else sum / S
-      }
-    res
-  }
-
-  def deleteError(img: BI, r: Int): BI = {
-    val mat = imgToMInt(img)
-    val med = deleteError(mat, r)
-    matToImg(med, img.getType)
-  }
-
-  // TODO: Misha: maybe made as parallel?
   def gaus(mat: MInt, r: Int, sigma: T): M = {
-    val core = {
-      val C = 1.0 / (2 * Pi * sqr(sigma))
-      val invSigma2 = 1.0 / (2 * sqr(sigma))
-      val res = createM(2 * r + 1, 2 * r + 1)
-      for (i <- -r to r; j <- -r to r)
-        res(i + r)(j + r) = C * exp(-(i * i + j * j) * invSigma2)
-      val norm = res.map { _.sum }.sum
-      for (i <- -r to r; j <- -r to r)
-        res(i + r)(j + r) /= norm
-      res
-    }
+    val L = sqrt(1.0 / (2 * Pi * sqr(sigma)))
+    val invSigma2 = 1.0 / (2 * sqr(sigma))
     val m = mat.length; val n = mat(0).length
-    val res = createM(m, n)
-    for (i <- r until m - r; j <- r until n - r)
-      res(i)(j) = {
-        var sum: T = 0
-        for (y <- -r to r; x <- -r to r)
-          sum += (mat(i + y)(j + x)) * core(y + r)(x + r)
-        sum
-      }
-    res
+    // L*L * exp(-invSigma2 * (x * x + y * y))
+    val ls = (0 to r).map { x => L * exp(-invSigma2 * (x * x)) }
+    val strSum = createM(m, n)
+    for (y <- r until m - r; x <- r until n - r) {
+      strSum(y)(x) = mat(y)(x) * ls(0)
+      for (p <- 1 to r)
+        strSum(y)(x) += (mat(y)(x + p) + mat(y)(x - p)) * ls(p)
+    }
+    val colSum = createM(m, n)
+    for (y <- r until m - r; x <- r until n - r) {
+      colSum(y)(x) = strSum(y)(x) * ls(0)
+      for (p <- 1 to r)
+        colSum(y)(x) += (strSum(y + p)(x) + strSum(y - p)(x)) * ls(p)
+    }
+    colSum
   }
 
   def MSR(img: BI, r: Int): BI = {
@@ -91,7 +69,7 @@ object Filter {
       val res = createM(m, n)
       val ga = gaus(mat, r, sigma_i)
       for (i <- r until m - r; j <- 0 until n - r) {
-        if (mat(i)(j) != 0 && mat(i)(j) != 255 && ga(i)(j) != 0) {
+        if (mat(i)(j) != 0 && mat(i)(j) != MAX && ga(i)(j) != 0) {
           val C_ij = beta * (log(alpha * (mat(i)(j))) - log(sumMat(i)(j)))
           res(i)(j) = _G * (C_ij * (log(mat(i)(j)) - log(ga(i)(j))) + b)
         }
@@ -108,12 +86,12 @@ object Filter {
   def inverse(mat: MInt) {
     val m = mat.length; val n = mat(0).length
     for (i <- 0 until m; j <- 0 until n)
-      mat(i)(j) = 255 - mat(i)(j)
+      mat(i)(j) = MAX - mat(i)(j)
   }
   def inverse(mat: M) {
     val m = mat.length; val n = mat(0).length
     for (i <- 0 until m; j <- 0 until n)
-      mat(i)(j) = 255 - mat(i)(j)
+      mat(i)(j) = MAX - mat(i)(j)
   }
   def inverse(img: BI): BI = {
     val mat = imgToMInt(img)
@@ -126,11 +104,13 @@ object Filter {
     image.Operation.createImage((mats(0), mats(1), mats(2)), img.getType)
   }
 
-  /** x => 255*(x-l)/(h-l) */
+  /** x => MAX*(x-l)/(h-l) */
   def constrast(mat: MInt, h: Int, l: Int) {
     val m = mat.length; val n = mat(0).length
     def toNew(x: Int) =
-      if (x > h) 255 else if (x < l) 0 else 255 * (x - l) / (h - l)
+      if (x > h) MAX
+      else if (x < l) MIN
+      else MAX * (x - l) / (h - l)
     for (i <- 0 until m; j <- 0 until n)
       mat(i)(j) = toNew(mat(i)(j))
   }
@@ -139,7 +119,9 @@ object Filter {
   def constrast(img: BI, h: Int = 200, l: Int = 50) {
     val m = img.getHeight; val n = img.getWidth
     def toNew(x: Int) =
-      if (x > h) 255 else if (x < l) 0 else 255 * (x - l) / (h - l)
+      if (x > h) 255
+      else if (x < l) 0
+      else 255 * (x - l) / (h - l)
     for (y <- 0 until m; x <- 0 until n) {
       val rgb = img.getRGB(x, y)
       val b = rgb & 255
@@ -151,18 +133,23 @@ object Filter {
   }
 
   def adaptiveContrast(mat: MInt) {
-    val mx = maxM(mat); val mn = minM(mat)
+    val (mn, mx) = main.Statistic.minMax(mat)
     val m = mat.length; val n = mat(0).length
     def toNew(x: Int) =
-      if (x > mx) 255 else if (x < mn) 0 else 255 * (x - mn) / (mx - mn)
+      if (x > mx) MAX
+      else if (x < mn) MIN
+      else MAX * (x - mn) / (mx - mn)
     for (i <- 0 until m; j <- 0 until n)
       mat(i)(j) = toNew(mat(i)(j))
   }
+
   def adaptiveContrast(mat: M) {
-    val mx = maxM(mat); val mn = minM(mat)
+    val (mn, mx) = main.Statistic.minMax(mat)
     val m = mat.length; val n = mat(0).length
     def toNew(x: T): T =
-      if (x > mx) 255 else if (x < mn) 0 else 255 * (x - mn) / (mx - mn)
+      if (x > mx) MAX
+      else if (x < mn) MIN
+      else MAX * (x - mn) / (mx - mn)
     for (i <- 0 until m; j <- 0 until n)
       mat(i)(j) = toNew(mat(i)(j))
   }

@@ -1,7 +1,7 @@
 package transform
 
-import basic.Basic._
-import basic.ArrayToolKit._
+import main.Basic._
+import main.ArrayToolKit._
 
 class AncientEgyptianDecomposition(wavelet: wavelets.WaveletTransformTrait) extends TransformTrait {
   
@@ -11,7 +11,7 @@ class AncientEgyptianDecomposition(wavelet: wavelets.WaveletTransformTrait) exte
     val n = array1.length
     val array2 = new A(n)
     var offSet = 0
-    val lvls = basic.Decompose.decomposeWithMaxBlock(n, maxLvl) 
+    val lvls = main.Decompose.decomposeWithMaxBlock(n, maxLvl) 
     for(x <- lvls) {
       val arr1Sub: A = copyPart(array1, offSet, x)
       val arr2Sub: A = fun(arr1Sub)

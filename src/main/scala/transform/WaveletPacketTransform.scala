@@ -1,7 +1,7 @@
 package transform
 
-import basic.Basic._
-import basic.ArrayToolKit._
+import main.Basic._
+import main.ArrayToolKit._
 import exceptions._
 import wavelets.WaveletTransformTrait
 

@@ -1,7 +1,7 @@
 package wavelets
 
 import math._
-import basic.Basic._
+import main.Basic._
 
 class OldAsVessel(s0: Int = 5) {
   

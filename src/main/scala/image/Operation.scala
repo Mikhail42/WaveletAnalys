@@ -5,7 +5,7 @@ import java.awt.image._
 import java.awt.geom.AffineTransform
 
 import math._
-import basic.Basic._
+import main.Basic._
 
 object Operation {
   
@@ -134,18 +134,18 @@ object Operation {
   def matrixToImage(mat: M, imgType: Int = Input.defaultImgType): BI = 
     toImage(Operation.toColorMInt(mat), imgType)
   
-  /** @see #basic.MathToolKit.correlation */
+  /** @see #main.MathToolKit.correlation */
   def correlation(img1: BI, img2: BI, colorID: Int): T = {
     val mat1 = mapIT(Input.getColorsComponents(img1, colorID), (x: Int) => x.toDouble) 
     val mat2 = mapIT(Input.getColorsComponents(img2, colorID), (x: Int) => x.toDouble)
-    val cor = basic.Statistic.correlation(mat1, mat2)
+    val cor = main.Statistic.correlation(mat1, mat2)
     cor
   }
   
-  /** @see #basic.MathToolKit.disp */
+  /** @see #main.MathToolKit.disp */
   def disp(img: BI, colorID: Int): T = {
     val mat = mapIT(Input.getColorsComponents(img, colorID), (x: Int) => x.toDouble)
-    val aver = basic.Statistic.aver(mat)
-    basic.Statistic.disp(mat, aver)
+    val aver = main.Statistic.aver(mat)
+    main.Statistic.disp(mat, aver)
   }
 }

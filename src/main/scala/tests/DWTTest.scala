@@ -5,7 +5,7 @@ import math._
 
 
 
-import basic.Basic._
+import main.Basic._
 import image.Transform._
 import image.Output._
 import Base._
@@ -50,9 +50,9 @@ object DWTTest {
       val forw = aed.forward2D(mat)
       val revr = aed.reverse2D(forw)
       
-      val cor = basic.Statistic.correlation(mat, revr)
-      val aver = basic.Statistic.aver(mat)
-      val disp = basic.Statistic.disp(mat, aver)
+      val cor = main.Statistic.correlation(mat, revr)
+      val aver = main.Statistic.aver(mat)
+      val disp = main.Statistic.disp(mat, aver)
       assertEquals(cor, disp, 1e-10)
     }
   }
@@ -65,9 +65,9 @@ object DWTTest {
     val mat = getColorsComponents(img, 2).map{_.map{_.toDouble}}
     for (ord <- 1 to 4) {
       val resDB: M = daubechiesForwardAndReverse(mat, order = ord)
-      val cor: T = basic.Statistic.correlation(mat, resDB)
-      val aver: T = basic.Statistic.aver(mat)
-      val disp: T = basic.Statistic.disp(mat, aver)
+      val cor: T = main.Statistic.correlation(mat, resDB)
+      val aver: T = main.Statistic.aver(mat)
+      val disp: T = main.Statistic.disp(mat, aver)
       assertEquals(cor, disp, eps = 20)
     }
   } 

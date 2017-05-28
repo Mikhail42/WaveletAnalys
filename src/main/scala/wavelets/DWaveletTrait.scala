@@ -1,6 +1,6 @@
 package wavelets 
 
-import basic.Basic._
+import main.Basic._
 
 trait WaveletTransformTrait {
   

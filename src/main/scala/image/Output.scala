@@ -5,7 +5,7 @@ package image
 //import javax.imageio.ImageIO
 import javax.swing._
 //import java.awt.image._
-import basic.Basic._
+import main.Basic._
 
 object Output {
 

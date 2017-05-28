@@ -1,6 +1,6 @@
-package tests
+package imageT
 
-object Base {
+object Constants {
   private val resourcesDirectory = new java.io.File("src/main/resources")
   val dir = resourcesDirectory.getAbsolutePath() + "/"
   val forVessel = "01_g.jpg" //2//"image_023.jpg" //

@@ -1,8 +1,8 @@
-package basic
+package main
 
 import math._
 import Basic._
-import basic.Constants._
+import main.Constants._
 
 object MatrixRotate {
 

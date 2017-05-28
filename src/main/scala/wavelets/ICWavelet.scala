@@ -1,7 +1,7 @@
 package wavelets
 
-import basic.Basic._
-import basic.Constants._
+import main.Basic._
+import main.Constants._
 
 abstract class ICWavelet {
   val wavename: String
@@ -11,7 +11,7 @@ abstract class ICWavelet {
   def psi(x: T, y: T) : T = ???
   /** int_{x0,y0}^{x0+1, y0+1} psi(x, y) dx dy */
   protected def integral(xBeg: (T, T), xEnd: (T, T)): T = 
-    basic.Integral.simpson2(psi, xBeg, xEnd, h) 
+    main.Integral.simpson2(psi, xBeg, xEnd, h) 
     
   /** 2D core of wavelet */
   def core(sx: Int, sy: Int, theta: Int, a: T): M = {

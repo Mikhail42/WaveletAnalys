@@ -1,6 +1,6 @@
 package app
 
-import basic.Basic._
+import main.Basic._
 import image._
 
 object WMain {
@@ -13,6 +13,6 @@ object WMain {
     }
     //val res = preprocessing.DilateErose.dilateErose(image.Input.getImage("/home/misha/6-1-5.jpg"))
     //image.Output.visible(res, "tit")
-    time { tests.AnalysTest.diskTest }
+    time { tests.AnalysTest.vesselSegmentTest }
   }
 }

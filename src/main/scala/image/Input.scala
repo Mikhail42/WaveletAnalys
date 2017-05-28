@@ -1,10 +1,11 @@
 package image
 
+import main.Basic._
+import main.Constants._
+
 import java.io.File
 import javax.imageio.ImageIO
 import java.awt.image._
-
-import basic.Basic._
 
 object Input {
   val defaultFormat = "jpg"
@@ -14,7 +15,6 @@ object Input {
   /** @param name  name of file
    *  @return image from file with name @name
    */
-
   def getImage(name: String): BI = {
     val format = name.substring(name.lastIndexOf("."))
     if (format == "tif" || format == "tiff") getTiffImage(name)

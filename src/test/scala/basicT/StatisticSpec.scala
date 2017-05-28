@@ -1,10 +1,10 @@
-package test
+package mainT
 
 import org.scalatest.FlatSpec
 
 import math._ 
-import basic.Basic._
-import basic.Statistic._
+import main.Basic._
+import main.Statistic._
 
 class StatisticSpec extends FlatSpec {    
   behavior of "Primitive"
