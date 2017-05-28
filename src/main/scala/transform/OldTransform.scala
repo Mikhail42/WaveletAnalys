@@ -20,7 +20,7 @@ object OldTransform {
     val dirImg = Operation.toImage(dir)    
     
     val resImg = Operation.matrixToImage(res)
-    preprocessing.Filtr.constrast(resImg, 140, 20)
+    preprocessing.Filter.constrast(resImg, 140, 20)
     
     (resImg, dirImg, thinyImg)
   }

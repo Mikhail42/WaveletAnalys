@@ -179,7 +179,7 @@ object Statistic {
    *  @see @{link #localEX}
    */
   def localEX2(mat: MInt, sy: Int, sx: Int): MInt = {
-    val mat2 = mat.map { str => str.map { x => x * x } }
+    val mat2: MInt = mat.map { str => str.map { x => x * x } }
     localEX(mat2, sy, sx)
   }
 

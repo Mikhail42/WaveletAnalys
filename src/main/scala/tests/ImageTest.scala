@@ -54,7 +54,7 @@ object ImageTest {
     for (i <- 0 until mask.getHeight; j <- 0 until mask.getWidth)
       colComps(i)(j) = colComps(i)(j) & mask.getRGB(j, i)
     val greenImg = Operation.toImage(colComps)
-    preprocessing.Filtr.constrast(greenImg)
+    preprocessing.Filter.constrast(greenImg)
     val resImg = Operation.scale(greenImg, 600.0/greenImg.getWidth)
     Output.saveImage(resImg, dir+forMaskOut, "jpg")
     Output.visible(resImg, "Mask Test")

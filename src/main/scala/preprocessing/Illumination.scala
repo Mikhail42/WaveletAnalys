@@ -3,8 +3,9 @@ package preprocessing
 import basic.Basic._
 import math._
 
-object Alignment {
+object Illumination {
 
+  /** x => 128*x*x/localEX2(x, s, s) */
   def illumination(mat: MInt, s: Int): MInt = {
     val m = mat.length; val n = mat(0).length
     val MX2 = basic.Statistic.localEX2(mat, s, s)
@@ -16,6 +17,7 @@ object Alignment {
     res
   }
 
+  /** x => 128*x*x/localEX2(x, s, s) */
   def illumination(mat: M, s: Int): M = {
     val m = mat.length; val n = mat(0).length
     val MX2 = basic.Statistic.localEX2(mat, s, s)

@@ -16,9 +16,9 @@ object AnalysTest {
     val fileName = dir+forVessel
     val img = image.Operation.scale(Input.getImage(fileName), 1) 
     printlnTime("scale succesful")
-    val invImg = preprocessing.Filtr.fullInverse(img)
+    val invImg = preprocessing.Filter.fullInverse(img)
     printlnTime("fullInverse succesful")
-    val updImg = preprocessing.Filtr.MSR(invImg, r = 10)
+    val updImg = preprocessing.Filter.MSR(invImg, r = 10)
     //TODO: image.Output.visible(updImg, "inv MSR")
     printlnTime("MSR succesful")
     val morle = new wavelets.Morlet(1, 3, 8) // a = 1.5
@@ -35,7 +35,7 @@ object AnalysTest {
         val res = accentuation.Vessel.accent(updImg, 5, s, "MAX")
         //TODO: Output.visible(res._1, "WT")
         printlnTime("WT succesful")
-        val out = preprocessing.Filtr.deleteError(res._1, 2)
+        val out = preprocessing.Filter.deleteError(res._1, 2)
         printlnTime("delete error succesful")
         //val outInv = preprocessing.Filtr.inverse(out)
         //val delEr = preprocessing.DilateErose.eroseDilete(outInv)
