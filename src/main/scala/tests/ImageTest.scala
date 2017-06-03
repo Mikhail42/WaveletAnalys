@@ -15,7 +15,7 @@ object ImageTest {
   /** test on the allocation of the field direction */
   def directionTest {
     val name = dir + forDirection
-    val img = Input.getImage(name) 
+    val img = Input.uploadImage(name) 
     val direct: BI = Analys.direction(img)
     Output.saveImage(direct, s"${name}_field_out.jpg", Input.defaultFormat)
   }
@@ -23,17 +23,17 @@ object ImageTest {
   /** test load, scale and visible .tif image */
    def loadTiffTest {
     val name = dir + forTiff
-    val img: BI = Input.getTiffImage(name)
+    val img: BI = Input.uploadTiffImage(name)
     val resImg = Operation.scale(img, 1000.0/img.getWidth)
     Output.visible(resImg, "Test load a tif image")
   }
   
   /** compare two gray images. 2th image is ideal, 1th -- is my result */
   def compareGrayWithTiffTest {
-    val imgWT = Input.getImage(dir+forComp1)
+    val imgWT = Input.uploadImage(dir+forComp1)
     val resWt = Operation.toBinary(imgWT)
     
-    val imgTif: BI = Input.getTiffImage(dir+forComp2)
+    val imgTif: BI = Input.uploadTiffImage(dir+forComp2)
     
     val resCompare = Analys.compareBinaryImages(resWt, imgTif)
     println(s"Compare Image Test: result = $resCompare")
@@ -42,13 +42,13 @@ object ImageTest {
   /** img <- img & mask */
   def maskTest{    
     val inpName = dir + forMask
-    val img = Input.getImage(inpName)    
+    val img = Input.uploadImage(inpName)    
    
     val inpNameMask = dir+forFullMask
-    val tif: BI = Input.getImage(inpNameMask)
+    val tif: BI = Input.uploadImage(inpNameMask)
     val tifScala: BI = Operation.scale(tif, 600.0/tif.getWidth)
     Output.saveImage(tifScala, dir+"g_mask.jpg", "jpg")
-    val mask = Input.getImage(inpNameMask)
+    val mask = Input.uploadImage(inpNameMask)
     
     val colComps = Input.getColorsComponents(img, 0.0, 0.3, 0.7).map{_.map{255 - _}}
     for (i <- 0 until mask.getHeight; j <- 0 until mask.getWidth)

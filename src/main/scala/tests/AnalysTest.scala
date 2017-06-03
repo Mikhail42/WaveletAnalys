@@ -14,7 +14,7 @@ object AnalysTest {
   /** vessels accentuation test (0 until 180 by 10 degree) */
   def vesselSegmentTest {
     val fileName = dir + forVessel
-    val img = image.Operation.scale(Input.getImage(fileName), 1)
+    val img = image.Operation.scale(Input.uploadImage(fileName), 1)
     printlnTime("scale succesful")
     val invImg = preprocessing.Filter.fullInverse(img)
     printlnTime("fullInverse succesful")
@@ -67,7 +67,7 @@ object AnalysTest {
   def diskTest {
     val fileName = dir + forDisk
     println(fileName)
-    val img = image.Input.getImage(fileName)
+    val img = image.Input.uploadImage(fileName)
     for (r <- 2 to 25 by 2) {
       val res = accentuation.Disk.emphasis(img, r)
       val res2 = preprocessing.Filter.inverse(res)

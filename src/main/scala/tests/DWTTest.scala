@@ -61,7 +61,7 @@ object DWTTest {
     import transform.DTransform._
     import image.Input._
     val inpName = dir + forDWT
-    val img: BI = getImage(inpName)
+    val img: BI = uploadImage(inpName)
     val mat = getColorsComponents(img, 2).map{_.map{_.toDouble}}
     for (ord <- 1 to 4) {
       val resDB: M = daubechiesForwardAndReverse(mat, order = ord)
@@ -74,14 +74,14 @@ object DWTTest {
   
   def DaubechiesForwardImageTest {
     val inpName = dir + forDWT
-    val img = image.Input.getImage(inpName)
+    val img = image.Input.uploadImage(inpName)
     val resImg: BI = DaubechiesForwardImage(img, order = 1, "mat")
     visible(resImg, "Daubechies Forward Image Test")
   }
   
   def DaubechiesForwardImageWithRotateTest {
     val inpName = dir + forDWT
-    val img = image.Input.getImage(inpName)
+    val img = image.Input.uploadImage(inpName)
     val (imgTr, imgTheta)  = 
       DaubechiesForwardImageWithRotate(img, ord = 1)
     saveImage(imgTr, s"${dir}tr_im001.jpg", "jpg")

@@ -15,7 +15,7 @@ object CWTTest {
   def cwtTests {
     import wavelets._
     val filename = dir + forCWT
-    val img = image.Input.getImage(filename)
+    val img = image.Input.uploadImage(filename)
     for (id <- 1 to 1; a <- 0.4 to 3 by 0.4) {
       def cwt(wave: ICWavelet) = 
         image.Transform.cwt(wave, a, id, img)

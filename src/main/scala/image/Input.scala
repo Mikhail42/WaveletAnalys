@@ -15,13 +15,13 @@ object Input {
   /** @param name  name of file
    *  @return image from file with name @name
    */
-  def getImage(name: String): BI = {
+  def uploadImage(name: String): BI = {
     val format = name.substring(name.lastIndexOf("."))
-    if (format == "tif" || format == "tiff") getTiffImage(name)
+    if (format == "tif" || format == "tiff") uploadTiffImage(name)
     else ImageIO.read(new File(name))
   }
 
-  def getTiffImage(name: String): BI = {
+  def uploadTiffImage(name: String): BI = {
     import com.sun.media.jai.codec._
     import java.awt.image.renderable.ParameterBlock
     import javax.media.jai._
@@ -35,20 +35,17 @@ object Input {
    *  @return all pixels as array from raster data
    */
   def getPixels(img: BufferedImage): Array[Byte] =
-    img.getRaster.getDataBuffer().asInstanceOf[DataBufferByte].getData()
+    img.getRaster.getDataBuffer.asInstanceOf[DataBufferByte].getData
 
-  private def getIntPixels(img: BufferedImage): Array[Int] =
-    getPixels(img).map { _.toInt }
-  private def getColorPixels(img: BufferedImage): Array[Int] =
-    getIntPixels(img).map { x => x & 0xFF /*if (x >= 0) x else 127 - x */ }
   def getMatGrayImage(img: BI): MInt = {
-    val ar = getColorPixels(img)
+    val ar = getPixels(img)
     val m = img.getHeight; val n = img.getWidth
     val mat = createMInt(m, n)
     for (i <- 0 until m) {
+      val str = mat(i)
       val ind = i * n
       for (j <- 0 until n)
-        mat(i)(j) = ar(ind + j)
+        str(j) = ar(ind + j) & 0xFF /*if (x >= 0) x else 127 - x */
     }
     mat
   }
@@ -62,7 +59,7 @@ object Input {
     res
   }
 
-  def getColorsComponents(img: BI, cb: T, cg: T, cr: T) = {
+  def getColorsComponents(img: BI, cb: T, cg: T, cr: T): MInt = {
     val n = img.getWidth; val m = img.getHeight
     val res = createMInt(m, n)
     for (y <- 0 until m; x <- 0 until n) {
