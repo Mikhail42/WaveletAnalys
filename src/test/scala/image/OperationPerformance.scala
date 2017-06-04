@@ -9,43 +9,38 @@ import Operation._
 class OperationPerformance extends Bench.LocalTime {
   val logger = LoggerFactory.getLogger(classOf[OperationPerformance])
 
-  def time[R](block: => R, defin: String) {
+  val forDiskImg = Input.uploadImage(dir + forDisk)
+  val forTiffImg = Input.uploadTiffImage(dir + forTiff)
+
+  def time[R](block: => R, defin: String) = {
     val t0 = System.nanoTime()
     val result = block // call-by-name
     val t1 = System.nanoTime()
     logger.info("{}: {} ms", defin, (t1 - t0) / 1000000)
+    result
   }
 
-  time(image.Operation.getPixels(image.Input.uploadImage(dir + forDisk)), "upload pixels")
-  time(image.Operation.grayMatFromImage(image.Input.uploadImage(dir + forDisk)), "matrix gray image")
-  time(image.Operation.getColorsComponents(image.Input.uploadImage(dir + forDisk), 2), "color components #2")
-  time(image.Operation.getColorsComponents(image.Input.uploadImage(dir + forDisk)), "color components RGB")
+  time(image.Operation.getPixels(forDiskImg), "upload pixels from image")
+  val grayMat = time(image.Operation.grayMatFromImage(forDiskImg), "matrix from gray image")
+  val G = time(image.Operation.getColorsComponents(forDiskImg, 2), "color components #2")
+  val RGBDisc = time(image.Operation.getColorsComponents(forDiskImg), "color components RGB")
 
-  time(toGray(Input.uploadImage(dir + forDisk)), "to gray")
+  time(toGray(forDiskImg), "image to gray")
 
-  time(deepCopy(Input.uploadImage(dir + forDisk)), "deep copy")
+  time(toBinary(forDiskImg, 100), "image to binary")
 
-  time({
-    val mat = grayMatFromImage(Input.uploadTiffImage(dir + forTiff))
-    createTiffImage(mat)
-  }, "upload tiff matrix and create image from her"
-  )
-  time({
-    val img = image.Input.uploadImage(dir + forDisk)
-    val mat = image.Operation.getColorsComponents(img)
-    image.Operation.createImage(mat, img.getType)
-  }, "upload all color components and create image from their"
-  )
+  time(deepCopy(forDiskImg), "image deep copy")
 
-  time({
-    val img = image.Input.uploadImage(dir + forDisk)
-    val img2 = image.Operation.rotate(img, 30)
-  }, "rotate"
-  )
+  time(createTiffImage(grayMat), "create image from the matrix")
 
-  time({
-    val img = image.Input.uploadImage(dir + forDisk)
-    val img2 = image.Operation.scale(img, 2)
-  }, "scale in 2 times"
-  )
+  time(image.Operation.createImage(RGBDisc, forDiskImg.getType), "create image from the matrix")
+
+  time(image.Operation.rotate(forDiskImg, 30), "rotate image (30 deg) by java.awt.geom")
+
+  {
+    val mat = other.Types.imgToM(forDiskImg)
+    time(image.Operation.rotate(mat, 30, mat.length, mat(0).length), "rotate matrix from me")
+  }
+
+  time(image.Operation.scale(forDiskImg, 2), "scale in 2 times")
 }
