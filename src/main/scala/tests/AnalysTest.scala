@@ -14,8 +14,7 @@ object AnalysTest {
   /** vessels accentuation test (0 until 180 by 10 degree) */
   def vesselSegmentTest {
     val fileName = dir + forVessel
-    val img = image.Operation.scale(Input.uploadImage(fileName), 1)
-    printlnTime("scale succesful")
+    val img = Input.uploadImage(fileName)
     val invImg = preprocessing.Filter.fullInverse(img)
     printlnTime("fullInverse succesful")
     val updImg = preprocessing.Filter.MSR(invImg, r = 10)

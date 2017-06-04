@@ -50,19 +50,18 @@ object Filter {
   }
 
   def MSR(img: BI, r: Int): BI = {
-    val matG = image.Input.getColorsComponents(img, 2)
-    image.Output.visible(intMatToImg(matG), "inv green")
-    val matB = image.Input.getColorsComponents(img, 1)
-    val matR = image.Input.getColorsComponents(img, 3)
-    val m = matG.length; val n = matG(0).length
+    val RGB = image.Input.getColorsComponents(img)
+    val R = RGB._1; val G = RGB._2; val B = RGB._3
+    val m = R.length; val n = R(0).length
     val sumMat = createM(m, n)
     for (i <- 0 until m; j <- 0 until n)
-      sumMat(i)(j) = matG(i)(j) + matB(i)(j) + matR(i)(j)
+      sumMat(i)(j) = R(i)(j) + G(i)(j) + B(i)(j)
+
     def getMSR(id: Int): M = {
       val (mat, sigma_i) = id match {
-        case 1 => (matB, 15)
-        case 2 => (matG, 80)
-        case 3 => (matR, 250)
+        case 1 => (B, 15)
+        case 2 => (G, 80)
+        case 3 => (R, 250)
       }
       // TODO: Misha: maybe made as parallel?
       val (_G, b, alpha, beta) = (192, -30, 125, 46)
@@ -77,6 +76,7 @@ object Filter {
       preprocessing.Filter.adaptiveContrast(res)
       res
     }
+
     val resG = mapTI(getMSR(2), toInt(_))
     //  val resB = map(getMSR(1), toInt)
     //  val resR = map(getMSR(3), toInt)

@@ -6,12 +6,12 @@ import math._
 import main.Basic._
 
 object Operation {
+  private lazy val grayFilterJHLabs = new com.jhlabs.image.GrayFilter
 
   /** very long: 250 ms for disk image (1.jpg, 2048*1500) */
   def toGray(img: BI): BI = {
-    val grF = new com.jhlabs.image.GrayFilter
     val resImg = new BI(img.getWidth, img.getHeight, java.awt.image.BufferedImage.TYPE_BYTE_GRAY)
-    grF.filter(img, resImg)
+    grayFilterJHLabs.filter(img, resImg)
     resImg
   }
 
@@ -84,7 +84,7 @@ object Operation {
   def affineTransform(img: BI, trans: AffineTransform, w: Int, h: Int): BI = {
     val resImg = new BI(2 * w, 2 * h, img.getType)
     val riGraphic = resImg.createGraphics()
-    riGraphic.setBackground(Input.imgColor)
+    riGraphic.setBackground(Input.defaultBackgroundColor)
     riGraphic.clearRect(0, 0, 2 * w, 2 * h)
     resImg.getGraphics.asInstanceOf[java.awt.Graphics2D].drawImage(img, trans, null)
     resImg

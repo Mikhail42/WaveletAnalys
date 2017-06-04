@@ -10,7 +10,7 @@ import java.awt.image._
 object Input {
   val defaultFormat = "jpg"
   val defaultImgType = BufferedImage.TYPE_INT_RGB
-  val imgColor = java.awt.Color.BLACK
+  val defaultBackgroundColor = java.awt.Color.BLACK
 
   /** @param name  name of file
    *  @return image from file with name @name
@@ -53,6 +53,19 @@ object Input {
     for (y <- 0 until m; x <- 0 until n)
       res(y)(x) = (img.getRGB(x, y) >> shift) & 255
     res
+  }
+  def getColorsComponents(img: BI): (MInt, MInt, MInt) = {
+    val n = img.getWidth; val m = img.getHeight
+    val B = createMInt(m, n) // >> 0
+    val G = createMInt(m, n) // >> 8
+    val R = createMInt(m, n) // >> 16
+    for (y <- 0 until m; x <- 0 until n) {
+      val rgb = img.getRGB(x, y)
+      B(y)(x) = rgb & 0xFF
+      G(y)(x) = (rgb >> 8) & 0xFF
+      R(y)(x) = (rgb >> 16) & 0xFF
+    }
+    (R, G, B)
   }
 
   def getColorsComponents(img: BI, cb: T, cg: T, cr: T): MInt = {
