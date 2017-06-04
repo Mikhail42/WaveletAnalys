@@ -1,6 +1,6 @@
 package preprocessing
 
-import main.Basic._
+import other.Basic._
 import math._
 
 object Filter {

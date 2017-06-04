@@ -1,8 +1,8 @@
 package wavelets
 
-import main.Basic._
+import other.Basic._
 import math._
-import main.Integral
+import other.Integral
 
 abstract class ACBoundedWavelet(d: T, a: T) extends ICWavelet {
   val dDivA: T = d/a

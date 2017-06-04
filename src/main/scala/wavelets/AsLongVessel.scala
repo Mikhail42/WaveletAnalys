@@ -1,7 +1,7 @@
 package wavelets
-import main.Basic._
+import other.Basic._
 import math._
-import main.Integral
+import other.Integral
 
 class AsLongVessel(d: T = 4, a: T) extends ACBoundedWavelet(d, a) {
   override val wavename = "AsLongVessel"

@@ -1,6 +1,6 @@
 package tests
 
-import main.Basic._
+import other.Basic._
 
 import math._
 import image._
@@ -11,7 +11,7 @@ import Base._
 
 object ImageTest {
 
-  def imp = {import main.Basic._}
+  def imp = {import other.Basic._}
   /** test on the allocation of the field direction */
   def directionTest {
     val name = dir + forDirection

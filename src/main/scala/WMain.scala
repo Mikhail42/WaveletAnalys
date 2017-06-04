@@ -1,6 +1,6 @@
-package app
 
-import main.Basic._
+
+import other.Basic._
 import image._
 
 object WMain {

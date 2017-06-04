@@ -1,6 +1,6 @@
 package transform
 
-import main.Basic._
+import other.Basic._
 import image._
 
 object Transform {

@@ -2,7 +2,7 @@ package tests
 
 import math._
 
-import main.Basic._
+import other.Basic._
 import transform.Transform._
 import image.Output._
 import image.Operation._

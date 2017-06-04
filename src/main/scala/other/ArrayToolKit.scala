@@ -1,6 +1,6 @@
-package main
+package other
 
-import main.Basic._
+import other.Basic._
 
 object ArrayToolKit {
   

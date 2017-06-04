@@ -1,7 +1,7 @@
 package transform
 
 import math._
-import main.Basic._
+import other.Basic._
 import image.Input._
 import image.Operation._
 import image._

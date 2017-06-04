@@ -1,7 +1,7 @@
-package main
+package transform
 
 import math._
-import main.Basic._
+import other.Basic._
 
 /** some math methods
  *  @author Ionkin Mikhail 

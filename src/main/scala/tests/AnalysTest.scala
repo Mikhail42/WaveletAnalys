@@ -3,7 +3,7 @@ package tests
 import math._
 
 import Base._
-import main.Basic._
+import other.Basic._
 import image._
 
 object AnalysTest {

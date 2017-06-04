@@ -1,7 +1,7 @@
 package postprocessing
 
 import math._
-import main.Basic._
+import other.Basic._
 
 /** For test see [[test.StatisticSpec]]
  */
@@ -220,5 +220,20 @@ object Statistic {
     for (i <- 0 until m; j <- 0 until n)
       res(i)(j) = ex2(i)(j) - sqr(ex(i)(j))
     res
+  }
+
+  /** @see #other.MathToolKit.correlation */
+  def correlation(img1: BI, img2: BI, colorID: Int): T = {
+    val mat1 = mapIT(image.Operation.getColorsComponents(img1, colorID), (x: Int) => x.toDouble)
+    val mat2 = mapIT(image.Operation.getColorsComponents(img2, colorID), (x: Int) => x.toDouble)
+    val cor = postprocessing.Statistic.correlation(mat1, mat2)
+    cor
+  }
+
+  /** @see #other.MathToolKit.disp */
+  def disp(img: BI, colorID: Int): T = {
+    val mat = mapIT(image.Operation.getColorsComponents(img, colorID), (x: Int) => x.toDouble)
+    val aver = postprocessing.Statistic.aver(mat)
+    postprocessing.Statistic.disp(mat, aver)
   }
 }

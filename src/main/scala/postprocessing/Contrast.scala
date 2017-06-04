@@ -1,11 +1,10 @@
-package main
+package postprocessing
 
 import math._
-import Basic._
-import main.Constants._
+import other.Basic._
+import other.Constants._
 
-object MatrixUpdate {
-
+object Contrast {
   /** @return 255.0*(x-mn)/(mx-mn)) or bordered value */
   def contrast(mat: M, mn: T, mx: T): M = {
     val c = 255.0 / (mx - mn)

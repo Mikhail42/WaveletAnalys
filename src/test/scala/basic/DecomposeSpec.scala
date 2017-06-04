@@ -3,10 +3,10 @@ package basic
 import org.scalatest.FlatSpec
 
 import math._ 
-import main.Basic._
+import other.Basic._
 
 object DecomposeSpec extends  FlatSpec {
-    import main.Decompose._
+    import transform.Decompose._
   "254 is decompose of " should "List(128, 64, 32, 16, 8, 4, 2)" in {
     assert{ decompose(254).equals( List(128, 64, 32, 16, 8, 4, 2))}
   }

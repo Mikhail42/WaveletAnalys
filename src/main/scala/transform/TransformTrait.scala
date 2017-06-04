@@ -1,7 +1,7 @@
 package transform 
 
-import main.Basic._
-import main.ArrayToolKit._
+import other.Basic._
+import other.ArrayToolKit._
 import exceptions._
 
 /**

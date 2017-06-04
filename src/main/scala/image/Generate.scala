@@ -5,7 +5,7 @@ import java.awt.image._
 import java.awt.geom.AffineTransform
 
 import math._
-import main.Basic._
+import other.Basic._
 
 object Generate {
 
@@ -14,7 +14,7 @@ object Generate {
     // C is frequency
     val B: T = 5; val C: T = 10;
     val size = 100
-    val picture: M = main.Basic.createWhiteMat(size, size)
+    val picture: M = other.Basic.createWhiteMat(size, size)
     for (y <- 0 until size; x <- 0 until size)
       for (A <- 30 to 190 by 30)
         picture(y)(x) =
@@ -42,7 +42,7 @@ object Generate {
   }
 
   def generateImageMat(amplit: T, freq: T, w: Int, h: Int): BI = {
-    val picture: M = main.Basic.createWhiteMat(w, h)
+    val picture: M = other.Basic.createWhiteMat(w, h)
     for (y <- 0 until h; x <- 0 until w)
       for (A <- 30 to 190 by 30)
         picture(y)(x) =

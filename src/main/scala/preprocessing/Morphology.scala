@@ -1,6 +1,6 @@
 package preprocessing
 
-import main.Basic._
+import other.Basic._
 
 object Morphology {
   def erosion(mat: MInt, r: Int): MInt = {

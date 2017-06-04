@@ -1,7 +1,7 @@
 package image
 
 import org.scalameter.api._
-import Constants._
+import ResourcesPath._
 
 import Operation._
 

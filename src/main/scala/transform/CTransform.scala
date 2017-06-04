@@ -1,7 +1,7 @@
 package transform
 
 import wavelets._
-import main.Basic._
+import other.Basic._
 import image._
 import image.Operation._
 import math._

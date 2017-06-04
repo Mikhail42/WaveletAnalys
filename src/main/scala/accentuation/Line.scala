@@ -1,6 +1,6 @@
 package accentuation
 
-import main.Basic._
+import other.Basic._
 import image._
 import math._
 

@@ -1,7 +1,7 @@
 package wavelets
 
 import math._
-import main.Basic._
+import other.Basic._
 
 class FHAT(d: T = 3, a: T) extends ACBoundedWavelet(d, a) {
   override val wavename = "FHAT"

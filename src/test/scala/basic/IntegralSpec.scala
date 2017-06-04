@@ -3,8 +3,8 @@ package basic
 import org.scalatest.FlatSpec
 
 import math._ 
-import main.Basic._
-import main.Integral._
+import other.Basic._
+import other.Integral._
 
 class IntegralSpec extends FlatSpec  {
   

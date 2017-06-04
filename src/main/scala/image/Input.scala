@@ -1,7 +1,7 @@
 package image
 
-import main.Basic._
-import main.Constants._
+import other.Basic._
+import other.Constants._
 
 import java.io.File
 import javax.imageio.ImageIO

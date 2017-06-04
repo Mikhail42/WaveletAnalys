@@ -3,8 +3,8 @@ package postprocessing
 import math._
 import java.awt.image._
 
-import main.Basic._
-import main.Constants._
+import other.Basic._
+import other.Constants._
 
 object Histogram {
 
