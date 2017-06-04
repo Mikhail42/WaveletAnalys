@@ -4,7 +4,7 @@ object ResourcesPath {
   private val resourcesDirectory = new java.io.File("src/main/resources")
   val dir = resourcesDirectory.getAbsolutePath() + "/"
   val forVessel = "01_g.jpg" //2//"image_023.jpg" //
-  val forDisk = "1.jpg" //"image_023.jpg" //""
+  val forDisk = "01_g.jpg" //"image_023.jpg" //""
   val forTiff = "01_g.tif"
   val forComp1 = "02_dr_out.jpg"
   val forComp2 = "02_dr.tif"

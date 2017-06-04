@@ -26,5 +26,4 @@ object Input {
     val params = new java.awt.image.renderable.ParameterBlock() { this.add(stream) }
     javax.media.jai.JAI.create("tiff", params).getAsBufferedImage
   }
-
 }

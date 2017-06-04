@@ -1,44 +1,51 @@
 package image
 
 import org.scalameter.api._
-import ResourcesPath._
+import org.slf4j.LoggerFactory
 
+import ResourcesPath._
 import Operation._
 
-object OperationPerformance extends Bench.LocalTime {
-  performance of "upload pixels" in {
-    measure method "pixels" in {
-      image.Operation.getPixels(image.Input.uploadImage(dir + forDisk))
-    }
+class OperationPerformance extends Bench.LocalTime {
+  val logger = LoggerFactory.getLogger(classOf[OperationPerformance])
+
+  def time[R](block: => R, defin: String) {
+    val t0 = System.nanoTime()
+    val result = block // call-by-name
+    val t1 = System.nanoTime()
+    logger.info("{}: {} ms", defin, (t1 - t0) / 1000000)
   }
 
-  performance of "gray image" in {
-    measure method "matrix gray image" in {
-      image.Operation.grayMatFromImage(image.Input.uploadImage(dir + forDisk))
-    }
-  }
+  time(image.Operation.getPixels(image.Input.uploadImage(dir + forDisk)), "upload pixels")
+  time(image.Operation.grayMatFromImage(image.Input.uploadImage(dir + forDisk)), "matrix gray image")
+  time(image.Operation.getColorsComponents(image.Input.uploadImage(dir + forDisk), 2), "color components #2")
+  time(image.Operation.getColorsComponents(image.Input.uploadImage(dir + forDisk)), "color components RGB")
 
-  performance of "color matrix of image" in {
-    measure method "color components" in {
-      image.Operation.getColorsComponents(image.Input.uploadImage(dir + forDisk), 2)
-    }
-  }
+  time(toGray(Input.uploadImage(dir + forDisk)), "to gray")
 
-  performance of "Operation" in {
+  time(deepCopy(Input.uploadImage(dir + forDisk)), "deep copy")
 
-    measure method "to gray" in {
-      toGray(Input.uploadImage(dir + forDisk))
-    }
-    measure method "deep copy" in {
-      deepCopy(Input.uploadImage(dir + forDisk))
-    }
-    measure method "tiff" in {
-      val mat = grayMatFromImage(Input.uploadTiffImage(dir + forTiff))
-      createTiffImage(mat)
-    }
-    measure method "simple" in {
-      val mat = grayMatFromImage(Input.uploadTiffImage(dir + forTiff))
-      createTiffImage(mat)
-    }
-  }
+  time({
+    val mat = grayMatFromImage(Input.uploadTiffImage(dir + forTiff))
+    createTiffImage(mat)
+  }, "upload tiff matrix and create image from her"
+  )
+  time({
+    val img = image.Input.uploadImage(dir + forDisk)
+    val mat = image.Operation.getColorsComponents(img)
+    image.Operation.createImage(mat, img.getType)
+  }, "upload all color components and create image from their"
+  )
+
+  time({
+    val img = image.Input.uploadImage(dir + forDisk)
+    val img2 = image.Operation.rotate(img, 30)
+  }, "rotate"
+  )
+
+  time({
+    val img = image.Input.uploadImage(dir + forDisk)
+    val img2 = image.Operation.scale(img, 2)
+  }, "scale in 2 times"
+  )
 }

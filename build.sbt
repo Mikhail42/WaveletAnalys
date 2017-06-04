@@ -8,6 +8,9 @@ resolvers ++= Seq(
   "Spray repository" at "http://repo.spray.io/"
 )
 
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.7"
+
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 //libraryDependencies += "com.jhlabs" % "filters" % "2.0.235-1"
@@ -28,7 +31,5 @@ resolvers += "Sonatype OSS Snapshots" at
 libraryDependencies += "com.storm-enroute" %% "scalameter" % "0.8.2"
 
 testFrameworks += new TestFramework("org.scalameter.ScalaMeterFramework")
-  
-logBuffered := true
 
 parallelExecution in Test := true
