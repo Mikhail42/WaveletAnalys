@@ -23,9 +23,9 @@ object Vessel {
     //val mx = maxM(vesselM); val mn = minM(vesselM)
     //preprocessing.Filtr.constrast(vesselM, mx, mn)
 
-    val vesImg = matToImg(vesselM, img.getType)
-    val directImg = matToImg(directMInt, img.getType)
-    val thinVesselImg = matToImg(thinVesselMat, img.getType)
+    val vesImg = image.Operation.createTiffImage(vesselM)
+    val directImg = image.Operation.createTiffImage(directMInt)
+    val thinVesselImg = image.Operation.createTiffImage(thinVesselMat)
     (vesImg, directImg, thinVesselImg)
   }
 

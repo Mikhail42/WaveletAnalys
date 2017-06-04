@@ -6,13 +6,18 @@ import Constants._
 object OperationPerformance extends Bench.LocalTime {
   performance of "Operation" in {
     measure method "to gray" in {
-      image.Operation.toGray(image.Input.uploadImage(dir + forDisk))
+      Operation.toGray(Input.uploadImage(dir + forDisk))
     }
     measure method "deep copy" in {
-      image.Operation.deepCopy(image.Input.uploadImage(dir + forDisk))
+      Operation.deepCopy(Input.uploadImage(dir + forDisk))
     }
-    measure method "to binary" in {
-      image.Operation.toBinary(image.Input.uploadImage(dir + forDisk))
+    measure method "tiff" in {
+      val mat = Input.grayMatFromImage(Input.uploadTiffImage(dir + forTiff))
+      Operation.createTiffImage(mat)
+    }
+    measure method "simple" in {
+      val mat = Input.grayMatFromImage(Input.uploadTiffImage(dir + forTiff))
+      Operation.createTiffImage(mat)
     }
   }
 }

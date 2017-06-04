@@ -80,7 +80,7 @@ object Filter {
     val resG = mapTI(getMSR(2), toInt(_))
     //  val resB = map(getMSR(1), toInt)
     //  val resR = map(getMSR(3), toInt)
-    image.Operation.createImage(resG, img.getType)
+    image.Operation.createTiffImage(resG)
   }
 
   def inverse(mat: MInt) {

@@ -1,7 +1,5 @@
 package image
 
-import java.awt._
-import java.awt.image._
 import java.awt.geom.AffineTransform
 
 import math._
@@ -12,7 +10,7 @@ object Operation {
   /** very long: 250 ms for disk image (1.jpg, 2048*1500) */
   def toGray(img: BI): BI = {
     val grF = new com.jhlabs.image.GrayFilter
-    val resImg = new BI(img.getWidth, img.getHeight, BufferedImage.TYPE_BYTE_GRAY)
+    val resImg = new BI(img.getWidth, img.getHeight, java.awt.image.BufferedImage.TYPE_BYTE_GRAY)
     grF.filter(img, resImg)
     resImg
   }
@@ -22,16 +20,16 @@ object Operation {
 
   /** full image's copy */
   def deepCopy(bi: BI): BI = {
-    val cm: ColorModel = bi.getColorModel()
+    val cm: java.awt.image.ColorModel = bi.getColorModel()
     val isAlphaPremultiplied = cm.isAlphaPremultiplied()
-    val raster: WritableRaster = bi.copyData(null)
+    val raster: java.awt.image.WritableRaster = bi.copyData(null)
     new BI(cm, raster, isAlphaPremultiplied, null)
   }
 
   /** converted image to binary (1 byte gray color) */
   def toBinary(img: BI, white: Int = 160): BI = {
     val mat = mapII(imgToMInt(img), (x: Int) => if (x < white) 0 else 255)
-    Operation.toImage(mat, java.awt.image.BufferedImage.TYPE_BYTE_GRAY)
+    Operation.createTiffImage(mat)
   }
 
   /** simple rotate image on theta degree.
@@ -88,7 +86,7 @@ object Operation {
     val riGraphic = resImg.createGraphics()
     riGraphic.setBackground(Input.imgColor)
     riGraphic.clearRect(0, 0, 2 * w, 2 * h)
-    resImg.getGraphics.asInstanceOf[Graphics2D].drawImage(img, trans, null)
+    resImg.getGraphics.asInstanceOf[java.awt.Graphics2D].drawImage(img, trans, null)
     resImg
   }
 
@@ -109,30 +107,18 @@ object Operation {
     img
   }
 
-  /** Let supMat == (red, green, blue) - components
-   *  @return red<<16 + green<<8 + blue
-   */
-  def createImage(mat: MInt, imgType: Int): BI = {
-    val h = mat.length; val w = mat(0).length;
-    val img = new BI(w, h, imgType)
-    for (x <- 0 until w; y <- 0 until h) {
-      val v = mat(y)(x).max(0).min(255)
-      val c = v +
-        (v << 8) +
-        (v << 16)
-      img.setRGB(x, y, c)
-    }
-    img
+  def createTiffImage(mat: MInt): BI = {
+    val m = mat.length; val n = mat(0).length
+    val resImg = new BI(n, m, java.awt.image.BufferedImage.TYPE_BYTE_GRAY)
+    val wr = resImg.getRaster()
+    for (x <- 0 until n; y <- 0 until m)
+      wr.setSample(x, y, 0, mat(y)(x))
+    resImg
   }
-
-  /** @return mat<<16 + mat<<8 + mat
-   */
-  def toImage(mat: MInt, imgType: Int = Input.defaultImgType): BI =
-    Operation.createImage(mat, imgType)
-
-  /** @see this.toImage */
-  def matrixToImage(mat: M, imgType: Int = Input.defaultImgType): BI =
-    toImage(Operation.toColorMInt(mat), imgType)
+  def createTiffImage(mat: M): BI = {
+    val mat2 = mapTI(mat, (x: T) => x.round.toInt)
+    createTiffImage(mat2)
+  }
 
   /** @see #main.MathToolKit.correlation */
   def correlation(img1: BI, img2: BI, colorID: Int): T = {

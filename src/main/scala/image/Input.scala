@@ -22,13 +22,9 @@ object Input {
   }
 
   def uploadTiffImage(name: String): BI = {
-    import com.sun.media.jai.codec._
-    import java.awt.image.renderable.ParameterBlock
-    import javax.media.jai._
-    val stream = new FileSeekableStream(name)
-    val decodeParam = new TIFFDecodeParam() { this.setDecodePaletteAsShorts(true) }
-    val params = new ParameterBlock() { this.add(stream) }
-    JAI.create("tiff", params).getAsBufferedImage
+    val stream = new com.sun.media.jai.codec.FileSeekableStream(name)
+    val params = new java.awt.image.renderable.ParameterBlock() { this.add(stream) }
+    javax.media.jai.JAI.create("tiff", params).getAsBufferedImage
   }
 
   /** @param img some image
@@ -37,7 +33,7 @@ object Input {
   def getPixels(img: BufferedImage): Array[Byte] =
     img.getRaster.getDataBuffer.asInstanceOf[DataBufferByte].getData
 
-  def getMatGrayImage(img: BI): MInt = {
+  def grayMatFromImage(img: BI): MInt = {
     val ar = getPixels(img)
     val m = img.getHeight; val n = img.getWidth
     val mat = createMInt(m, n)

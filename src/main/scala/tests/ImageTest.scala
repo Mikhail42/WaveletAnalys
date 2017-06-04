@@ -53,7 +53,7 @@ object ImageTest {
     val colComps = Input.getColorsComponents(img, 0.0, 0.3, 0.7).map{_.map{255 - _}}
     for (i <- 0 until mask.getHeight; j <- 0 until mask.getWidth)
       colComps(i)(j) = colComps(i)(j) & mask.getRGB(j, i)
-    val greenImg = Operation.toImage(colComps)
+    val greenImg = Operation.createTiffImage(colComps)
     preprocessing.Filter.constrast(greenImg)
     val resImg = Operation.scale(greenImg, 600.0/greenImg.getWidth)
     Output.saveImage(resImg, dir+forMaskOut, "jpg")

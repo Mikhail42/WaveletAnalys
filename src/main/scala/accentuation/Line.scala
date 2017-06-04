@@ -15,7 +15,7 @@ object Line {
    */
   def accent(img: BI, theta: Int, r: Int): BI = {
     val resMat: MInt = accent(imgToMInt(img), theta, r)
-    Operation.toImage(resMat, img.getType)
+    Operation.createTiffImage(resMat)
   }
 
   /** @see #lineSegment(img, theta, r)

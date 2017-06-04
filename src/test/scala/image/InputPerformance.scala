@@ -20,7 +20,7 @@ object InputPerformance extends Bench.LocalTime {
 
   performance of "gray image" in {
     measure method "matrix gray image" in {
-      image.Input.getMatGrayImage(image.Input.uploadImage(dir + forDisk))
+      image.Input.grayMatFromImage(image.Input.uploadImage(dir + forDisk))
     }
   }
 

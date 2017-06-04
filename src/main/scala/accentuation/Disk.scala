@@ -21,7 +21,7 @@ object Disk {
   def emphasis(img: BI, r: Int): BI = {
     val mat = mapIT(Input.getColorsComponents(img, colorId), toDouble)
     val resMat = emphasis(mat, r)
-    Operation.matrixToImage(resMat, img.getType)
+    Operation.createTiffImage(resMat)
   }
 
   /** disks emphasis
