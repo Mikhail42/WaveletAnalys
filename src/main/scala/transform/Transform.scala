@@ -1,4 +1,4 @@
-package image
+package transform
 
 import main.Basic._
 import image._
@@ -83,13 +83,13 @@ object Transform {
         }
     }
 
-    val white = Analys.white
     def mediate(directly: MInt, resMatImg: MInt) {
+      val white = postprocessing.Mediate.white
       val mediateMat = createMBool(m, n)
       for (y <- 0 until m; x <- 0 until n)
         if (resMatImg(y)(x) > white) {
           val (yMed, xMed): (Int, Int) =
-            Analys.getMediateLine(resMatImg, x, y, directly(y)(x))
+            postprocessing.Mediate.getMediateLine(resMatImg, x, y, directly(y)(x))
           if (sqr(yMed - y) + sqr(xMed - x) <= 2)
             mediateMat(yMed)(xMed) = true
         }

@@ -7,14 +7,63 @@ object Filter {
   val MAX = 255
   val MIN = 0
 
+  def smallFilter(img: BI, amountBorder: Int): BI = {
+    val mat = imgToMInt(img)
+    val m = mat.length; val n = mat(0).length
+    def isWhite(x: Int): Boolean = (x == 255)
+    var S = 0
+    def analysSmallFilter(i: Int, j: Int, delete: B = false) {
+      var centralX = j
+      var dy = 0
+      while (i + dy >= 0 && isWhite(mat(i + dy)(centralX))) {
+        centralX = getNewCentral(dy, centralX)
+        dy -= 1
+      }
+      dy = 1
+      while (i + dy < m && isWhite(mat(i + dy)(centralX))) {
+        centralX = getNewCentral(dy, centralX)
+        dy += 1
+      }
+
+      def getNewCentral(dy: Int, oldCenter: Int): Int = {
+        val leftBordX = {
+          var dx = 1
+          while (j + dx >= 0 && isWhite(mat(i + dy)(oldCenter + dx))) {
+            if (delete) mat(i + dy)(oldCenter + dx) = 0
+            dx -= 1
+          }
+          j + dx + 1
+        }
+        val rightBordX = {
+          var dx = 1
+          while (j + dx < n && isWhite(mat(i + dy)(oldCenter + dx))) {
+            if (delete) mat(i + dy)(oldCenter + dx) = 0
+            dx += 1
+          }
+          j + dx - 1
+        }
+        S += rightBordX - leftBordX
+        val centralX = (leftBordX + rightBordX) / 2
+        centralX
+      }
+      if (delete)
+        if (S < amountBorder)
+          analysSmallFilter(i, j, true)
+    }
+    for (i <- 0 until m; j <- 0 until n)
+      if (isWhite(mat(i)(j)))
+        analysSmallFilter(i, j)
+    intMatToImg(mat)
+  }
+
   def histogramFilterMin(img: BI): BI = {
-    val ind = image.Analys.minHistogram(img)
+    val ind = postprocessing.Histogram.minHistogram(img)
     println(ind)
     image.Operation.toBinary(img, ind)
   }
 
   def histogramFilterMax(img: BI): BI = {
-    val gi = image.Analys.histogram(img)
+    val gi = postprocessing.Histogram.histogram(img)
     val maxInd = 5 + gi.indexOf((5 until 250).map { gi(_) }.max)
     val ind1 = maxInd - 1
     val ind2 = maxInd + 1
@@ -133,7 +182,7 @@ object Filter {
   }
 
   def adaptiveContrast(mat: MInt) {
-    val (mn, mx) = main.Statistic.minMax(mat)
+    val (mn, mx) = postprocessing.Statistic.minMax(mat)
     val m = mat.length; val n = mat(0).length
     def toNew(x: Int) =
       if (x > mx) MAX
@@ -144,7 +193,7 @@ object Filter {
   }
 
   def adaptiveContrast(mat: M) {
-    val (mn, mx) = main.Statistic.minMax(mat)
+    val (mn, mx) = postprocessing.Statistic.minMax(mat)
     val m = mat.length; val n = mat(0).length
     def toNew(x: T): T =
       if (x > mx) MAX

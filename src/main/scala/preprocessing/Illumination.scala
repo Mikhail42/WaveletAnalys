@@ -8,7 +8,7 @@ object Illumination {
   /** x => 128*x*x/localEX2(x, s, s) */
   def illumination(mat: MInt, s: Int): MInt = {
     val m = mat.length; val n = mat(0).length
-    val MX2 = main.Statistic.localEX2(mat, s, s)
+    val MX2 = postprocessing.Statistic.localEX2(mat, s, s)
     val res = createMInt(m, n)
     for (y <- 0 until m; x <- 0 until n)
       res(y)(x) =
@@ -20,7 +20,7 @@ object Illumination {
   /** x => 128*x*x/localEX2(x, s, s) */
   def illumination(mat: M, s: Int): M = {
     val m = mat.length; val n = mat(0).length
-    val MX2 = main.Statistic.localEX2(mat, s, s)
+    val MX2 = postprocessing.Statistic.localEX2(mat, s, s)
     val res = createM(m, n)
     for (y <- 0 until m; x <- 0 until n)
       res(y)(x) =

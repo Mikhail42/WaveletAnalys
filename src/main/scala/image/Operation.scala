@@ -124,14 +124,14 @@ object Operation {
   def correlation(img1: BI, img2: BI, colorID: Int): T = {
     val mat1 = mapIT(Input.getColorsComponents(img1, colorID), (x: Int) => x.toDouble)
     val mat2 = mapIT(Input.getColorsComponents(img2, colorID), (x: Int) => x.toDouble)
-    val cor = main.Statistic.correlation(mat1, mat2)
+    val cor = postprocessing.Statistic.correlation(mat1, mat2)
     cor
   }
 
   /** @see #main.MathToolKit.disp */
   def disp(img: BI, colorID: Int): T = {
     val mat = mapIT(Input.getColorsComponents(img, colorID), (x: Int) => x.toDouble)
-    val aver = main.Statistic.aver(mat)
-    main.Statistic.disp(mat, aver)
+    val aver = postprocessing.Statistic.aver(mat)
+    postprocessing.Statistic.disp(mat, aver)
   }
 }

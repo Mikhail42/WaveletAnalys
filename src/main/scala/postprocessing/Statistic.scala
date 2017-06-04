@@ -1,4 +1,4 @@
-package main
+package postprocessing
 
 import math._
 import main.Basic._

@@ -77,13 +77,12 @@ object Vessel {
     }
 
     val res = resTranform.map { _.map { _.toInt } }
-    Analys.mediate(trueDir, res)
+    postprocessing.Mediate.mediate(trueDir, res)
 
     (resTranform, trueDir, res)
   }
 
   def maxSearch(i: Int, j: Int, locMask: Int => Int): (Int, Int) = {
-    import image.Analys._
     var mx = Int.MinValue
     var dir = 0
     for (theta <- 0 until 180 by stepTheta) {
@@ -97,7 +96,6 @@ object Vessel {
   }
 
   def minSearch(i: Int, j: Int, locMask: Int => Int): (Int, Int) = {
-    import image.Analys._
     var mn = Int.MaxValue
     var dir = 0
     for (theta <- 0 until 180 by stepTheta) {

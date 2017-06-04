@@ -4,7 +4,7 @@ import org.scalatest.FlatSpec
 
 import math._ 
 import main.Basic._
-import main.Statistic._
+import postprocessing.Statistic._
 
 class StatisticSpec extends FlatSpec {    
   behavior of "Primitive"

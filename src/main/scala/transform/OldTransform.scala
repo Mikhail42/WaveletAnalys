@@ -15,7 +15,7 @@ object OldTransform {
     val (res, dir) = transf(mat, a)
 
     val resIntImg = res.map { _.map { _.toInt } }
-    Analys.mediate(dir, resIntImg)
+    postprocessing.Mediate.mediate(dir, resIntImg)
     val thinyImg = Operation.createTiffImage(resIntImg)
     val dirImg = Operation.createTiffImage(dir)
     val resImg = Operation.createTiffImage(res)

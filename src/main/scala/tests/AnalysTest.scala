@@ -43,13 +43,13 @@ object AnalysTest {
         //val finalRes = preprocessing.Filtr.inverse(delEr)
         //TODO:
         Output.visible(out, "out")
-        val gis = image.Analys.histogram(out)
+        val his = postprocessing.Histogram.histogram(out)
         printlnTime("histogram succesful")
-        val sum = gis.sum - gis(255) - gis(0)
+        val sum = his.sum - his(255) - his(0)
         var locSum = 0
         var i = 254
         while (i > 0 && locSum < 0.3 * sum) {
-          locSum += gis(i)
+          locSum += his(i)
           i -= 1
         }
         val bin = Operation.toBinary(out, i)
