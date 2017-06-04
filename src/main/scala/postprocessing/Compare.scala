@@ -6,6 +6,8 @@ import java.awt.image._
 import main.Basic._
 import main.Constants._
 
+import image.Operation._
+
 object Compare {
 
   /** compare binary images
@@ -14,8 +16,8 @@ object Compare {
    *  @return pair (errorWhite/white, errorBlack/black)
    */
   def compareBinaryImages(img1: BI, img2: BI): (T, T) = {
-    val pixs1 = image.Input.getPixels(img1)
-    val pixs2 = image.Input.getPixels(img2)
+    val pixs1 = getPixels(img1)
+    val pixs2 = getPixels(img2)
     if (pixs1.length != pixs2.length)
       throw new Exception("Probably, Image Format Exception or Size Image Exception")
     val n = pixs1.length

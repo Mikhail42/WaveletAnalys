@@ -99,7 +99,7 @@ object Filter {
   }
 
   def MSR(img: BI, r: Int): BI = {
-    val RGB = image.Input.getColorsComponents(img)
+    val RGB = image.Operation.getColorsComponents(img)
     val R = RGB._1; val G = RGB._2; val B = RGB._3
     val m = R.length; val n = R(0).length
     val sumMat = createM(m, n)
@@ -148,7 +148,7 @@ object Filter {
     intMatToImg(mat)
   }
   def fullInverse(img: BI): BI = {
-    val mats = (1 to 3).map { image.Input.getColorsComponents(img, _) }
+    val mats = (1 to 3).map { image.Operation.getColorsComponents(img, _) }
     mats.map { inverse(_) }
     image.Operation.createImage((mats(0), mats(1), mats(2)), img.getType)
   }

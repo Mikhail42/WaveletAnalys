@@ -5,6 +5,8 @@ import main.Basic._
 import math._
 import image._
 
+import image.Operation._
+
 import Base._
 
 object ImageTest {
@@ -48,7 +50,7 @@ object ImageTest {
     Output.saveImage(tifScala, dir+"g_mask.jpg", "jpg")
     val mask = Input.uploadImage(inpNameMask)
 
-    val colComps = Input.getColorsComponents(img, 0.0, 0.3, 0.7).map{_.map{255 - _}}
+    val colComps = getColorsComponents(img, 0.0, 0.3, 0.7).map{_.map{255 - _}}
     for (i <- 0 until mask.getHeight; j <- 0 until mask.getWidth)
       colComps(i)(j) = colComps(i)(j) & mask.getRGB(j, i)
     val greenImg = Operation.createTiffImage(colComps)

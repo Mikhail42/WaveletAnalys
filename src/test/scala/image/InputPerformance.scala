@@ -12,21 +12,5 @@ object InputPerformance extends Bench.LocalTime {
       image.Input.uploadImage(dir + forDisk)
     }
   }
-  performance of "upload pixels" in {
-    measure method "pixels" in {
-      image.Input.getPixels(image.Input.uploadImage(dir + forDisk))
-    }
-  }
 
-  performance of "gray image" in {
-    measure method "matrix gray image" in {
-      image.Input.grayMatFromImage(image.Input.uploadImage(dir + forDisk))
-    }
-  }
-
-  performance of "color matrix of image" in {
-    measure method "color components" in {
-      image.Input.getColorsComponents(image.Input.uploadImage(dir + forDisk), 2)
-    }
-  }
 }

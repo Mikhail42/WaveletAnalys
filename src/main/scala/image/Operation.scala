@@ -4,8 +4,68 @@ import java.awt.geom.AffineTransform
 
 import math._
 import main.Basic._
+import main.Constants._
+
+import java.io.File
+import javax.imageio.ImageIO
+import java.awt.image._
 
 object Operation {
+
+  /** @param img some image
+   *  @return all pixels as array from raster data
+   */
+  def getPixels(img: BufferedImage): Array[Byte] =
+    img.getRaster.getDataBuffer.asInstanceOf[DataBufferByte].getData
+
+  def grayMatFromImage(img: BI): MInt = {
+    val ar = getPixels(img)
+    val m = img.getHeight; val n = img.getWidth
+    val mat = createMInt(m, n)
+    for (i <- 0 until m) {
+      val str = mat(i)
+      val ind = i * n
+      for (j <- 0 until n)
+        str(j) = ar(ind + j) & 0xFF /*if (x >= 0) x else 127 - x */
+    }
+    mat
+  }
+
+  def getColorsComponents(img: BI, colorID: Int): MInt = {
+    val n = img.getWidth; val m = img.getHeight
+    val shift = (colorID - 1) * 8
+    val res = createMInt(m, n)
+    for (y <- 0 until m; x <- 0 until n)
+      res(y)(x) = (img.getRGB(x, y) >> shift) & 255
+    res
+  }
+  def getColorsComponents(img: BI): (MInt, MInt, MInt) = {
+    val n = img.getWidth; val m = img.getHeight
+    val B = createMInt(m, n) // >> 0
+    val G = createMInt(m, n) // >> 8
+    val R = createMInt(m, n) // >> 16
+    for (y <- 0 until m; x <- 0 until n) {
+      val rgb = img.getRGB(x, y)
+      B(y)(x) = rgb & 0xFF
+      G(y)(x) = (rgb >> 8) & 0xFF
+      R(y)(x) = (rgb >> 16) & 0xFF
+    }
+    (R, G, B)
+  }
+
+  def getColorsComponents(img: BI, cb: T, cg: T, cr: T): MInt = {
+    val n = img.getWidth; val m = img.getHeight
+    val res = createMInt(m, n)
+    for (y <- 0 until m; x <- 0 until n) {
+      val rgb = img.getRGB(x, y)
+      val b = rgb & 255
+      val g = (rgb >> 8) & 255
+      val r = (rgb >> 16) & 255
+      res(y)(x) = (b * cb + g * cg + r * cr).floor.toInt
+    }
+    res
+  }
+
   private lazy val grayFilterJHLabs = new com.jhlabs.image.GrayFilter
 
   /** very long: 250 ms for disk image (1.jpg, 2048*1500) */
@@ -122,15 +182,15 @@ object Operation {
 
   /** @see #main.MathToolKit.correlation */
   def correlation(img1: BI, img2: BI, colorID: Int): T = {
-    val mat1 = mapIT(Input.getColorsComponents(img1, colorID), (x: Int) => x.toDouble)
-    val mat2 = mapIT(Input.getColorsComponents(img2, colorID), (x: Int) => x.toDouble)
+    val mat1 = mapIT(getColorsComponents(img1, colorID), (x: Int) => x.toDouble)
+    val mat2 = mapIT(getColorsComponents(img2, colorID), (x: Int) => x.toDouble)
     val cor = postprocessing.Statistic.correlation(mat1, mat2)
     cor
   }
 
   /** @see #main.MathToolKit.disp */
   def disp(img: BI, colorID: Int): T = {
-    val mat = mapIT(Input.getColorsComponents(img, colorID), (x: Int) => x.toDouble)
+    val mat = mapIT(getColorsComponents(img, colorID), (x: Int) => x.toDouble)
     val aver = postprocessing.Statistic.aver(mat)
     postprocessing.Statistic.disp(mat, aver)
   }

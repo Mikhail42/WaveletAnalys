@@ -2,6 +2,7 @@ package accentuation
 
 import main.Basic._
 import image._
+import image.Operation._
 import math._
 
 object Disk {
@@ -19,7 +20,7 @@ object Disk {
    *  @return image with emphasis object
    */
   def emphasis(img: BI, r: Int): BI = {
-    val mat = mapIT(Input.getColorsComponents(img, colorId), toDouble)
+    val mat = mapIT(getColorsComponents(img, colorId), toDouble)
     val resMat = emphasis(mat, r)
     Operation.createTiffImage(resMat)
   }

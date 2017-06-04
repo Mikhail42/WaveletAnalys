@@ -6,9 +6,8 @@ import image._
 object Transform {
 
   def DaubechiesForwardImage(img: BI, order: Int, trans: String): BI = {
-    import image.Input._
     val mat: M =
-      mapIT(getColorsComponents(img, 2), (x: Int) => x.toDouble)
+      mapIT(Operation.getColorsComponents(img, 2), (x: Int) => x.toDouble)
     val g: MInt =
       mapTI(transform.DTransform.daubechies(mat, order, trans), (x: T) => x.toInt)
     val resImg: BI = Operation.createTiffImage(g)
@@ -26,13 +25,13 @@ object Transform {
     for (theta <- 0 until 180 by 10) {
       println(theta)
       val imgT: BI = rotate(img, theta)
-      val matT = image.Input.getColorsComponents(imgT, 2).
+      val matT = image.Operation.getColorsComponents(imgT, 2).
         map { _.map { 255 - _.toDouble } }
       val gT: MInt = daubechies(matT, order = 1, transformID = "str").
         map { _.map { _.toInt } }
       val resImgT: BI = Operation.createTiffImage(gT)
       val resImg: BI = inverseRotate(resImgT, -theta, img.getWidth, img.getHeight)
-      val locMat = image.Input.getColorsComponents(resImg, 2)
+      val locMat = image.Operation.getColorsComponents(resImg, 2)
       for (i <- 0 until m; j <- 0 until n)
         if (locMat(i)(j) > resTr(i)(j)) {
           resTr(i)(j) = locMat(i)(j)

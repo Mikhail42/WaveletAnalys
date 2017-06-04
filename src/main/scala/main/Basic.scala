@@ -20,8 +20,8 @@ object Basic {
 
   def imgToMInt(img: BI): MInt = 
     if (img.getType != java.awt.image.BufferedImage.TYPE_BYTE_GRAY)
-      image.Input.getColorsComponents(img, colorId)
-    else image.Input.grayMatFromImage(img)
+      image.Operation.getColorsComponents(img, colorId)
+    else image.Operation.grayMatFromImage(img)
     
   def imgToM(img: BI): M = mapIT(imgToMInt(img), toDouble(_: Int))
   def intMatToImg(mat: MInt): BI = 

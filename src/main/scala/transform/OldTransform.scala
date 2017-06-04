@@ -3,6 +3,7 @@ package transform
 import math._
 import main.Basic._
 import image.Input._
+import image.Operation._
 import image._
 
 object OldTransform {
