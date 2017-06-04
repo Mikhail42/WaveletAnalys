@@ -13,8 +13,8 @@ object Basic {
   type B = Boolean
   type BI = java.awt.image.BufferedImage
   
-  def deltaX(r: Int, theta: T): Int = (r*cos(theta)).round.toInt
-  def deltaY(r: Int, theta: T): Int = (r*sin(theta)).round.toInt
+  def deltaX(r: Int, theta: Int): Int = (r*main.Constants.coss(theta)).round.toInt
+  def deltaY(r: Int, theta: Int): Int = (r*main.Constants.sins(theta)).round.toInt
   
   val colorId = 2
 
