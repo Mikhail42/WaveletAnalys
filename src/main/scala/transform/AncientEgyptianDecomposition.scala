@@ -1,6 +1,6 @@
 package transform
 
-import other.Basic._
+import other.Types._
 import other.ArrayToolKit._
 
 class AncientEgyptianDecomposition(wavelet: wavelets.WaveletTransformTrait) extends TransformTrait {

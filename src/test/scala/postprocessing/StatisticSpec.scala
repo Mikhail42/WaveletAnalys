@@ -2,7 +2,7 @@ package postprocessing
 
 import org.scalatest.FlatSpec
 import math._
-import other.Basic._
+import other.Types._
 import postprocessing.Statistic._
 
 class StatisticSpec extends FlatSpec {    

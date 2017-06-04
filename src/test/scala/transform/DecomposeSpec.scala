@@ -2,7 +2,7 @@ package transform
 
 import org.scalatest.FlatSpec
 import math._
-import other.Basic._
+import other.Types._
 import scala.annotation.tailrec
 
 object DecomposeSpec extends  FlatSpec {

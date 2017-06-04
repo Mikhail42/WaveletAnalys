@@ -1,6 +1,6 @@
 package wavelets
 
-import other.Basic._
+import other.Types._
 import scala.collection.mutable.ArraySeq
 
 class Daubechies(order: Int) extends WaveletTransformTrait {

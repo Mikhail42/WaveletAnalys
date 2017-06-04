@@ -3,7 +3,7 @@ package other
 import org.scalatest.FlatSpec
 
 import math._
-import other.Basic._
+import other.Types._
 import other.Constants._
 
 class ConstantSpec extends FlatSpec {

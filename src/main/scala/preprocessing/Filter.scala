@@ -1,6 +1,6 @@
 package preprocessing
 
-import other.Basic._
+import other.Types._
 import math._
 
 object Filter {

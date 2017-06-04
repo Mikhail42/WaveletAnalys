@@ -2,7 +2,7 @@ package other
 
 import math._
 
-object Basic {
+object Types {
   def assertEquals(x: T, y: T, eps: T) = 
     assert{ abs(x-y) < eps }
   

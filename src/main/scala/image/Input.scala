@@ -1,6 +1,6 @@
 package image
 
-import other.Basic._
+import other.Types._
 import other.Constants._
 
 import java.io.File

@@ -1,6 +1,6 @@
 package other
 
-import other.Basic._
+import other.Types._
 
 object ArrayToolKit {
   

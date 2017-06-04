@@ -1,6 +1,6 @@
 package wavelets
 
-import other.Basic._
+import other.Types._
 import math._
 import other.Integral
 

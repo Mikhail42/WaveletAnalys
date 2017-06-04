@@ -1,7 +1,7 @@
 package accentuation
 
 import math._
-import other.Basic._
+import other.Types._
 import image._
 
 object Vessel {

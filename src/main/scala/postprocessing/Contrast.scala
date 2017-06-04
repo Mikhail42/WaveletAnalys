@@ -1,7 +1,7 @@
 package postprocessing
 
 import math._
-import other.Basic._
+import other.Types._
 import other.Constants._
 
 object Contrast {

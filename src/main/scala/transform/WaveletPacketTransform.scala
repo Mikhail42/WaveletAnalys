@@ -1,6 +1,6 @@
 package transform
 
-import other.Basic._
+import other.Types._
 import other.ArrayToolKit._
 import exceptions._
 import wavelets.WaveletTransformTrait

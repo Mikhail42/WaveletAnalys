@@ -4,7 +4,7 @@ import math._
 
 
 
-import other.Basic._
+import other.Types._
 import image._
 
 import Base._
