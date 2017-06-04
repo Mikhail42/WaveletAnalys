@@ -12,5 +12,4 @@ object InputPerformance extends Bench.LocalTime {
       image.Input.uploadImage(dir + forDisk)
     }
   }
-
 }

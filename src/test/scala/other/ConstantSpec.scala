@@ -1,4 +1,4 @@
-package basic
+package other
 
 import org.scalatest.FlatSpec
 

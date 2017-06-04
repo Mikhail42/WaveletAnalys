@@ -1,8 +1,7 @@
-package basic
+package postprocessing
 
 import org.scalatest.FlatSpec
-
-import math._ 
+import math._
 import other.Basic._
 import postprocessing.Statistic._
 
