@@ -1,16 +1,11 @@
-
-
 import other.Types._
 import image._
 
 object WMain {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
+
   def main(args: Array[String]) {
-    def time[R](block: => R) {
-      val t0 = System.nanoTime()
-      val result = block // call-by-name
-      val t1 = System.nanoTime()
-      println("Elapsed time: " + (t1 - t0) / 1000000 + "ms")
-    }
-    time { tests.AnalysTest.vesselSegmentTest }
+    logger.info("main app started")
+    other.Time.time(tests.AnalysTest.vesselSegmentTest, "Main app")
   }
 }

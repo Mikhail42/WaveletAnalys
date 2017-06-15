@@ -4,10 +4,12 @@ import other.Types._
 import other.ArrayToolKit._
 
 class AncientEgyptianDecomposition(wavelet: wavelets.WaveletTransformTrait) extends TransformTrait {
+  override val logger = com.typesafe.scalalogging.Logger(getClass)
 
   val wpTransform = new WaveletPacketTransform(wavelet)
 
   private def oneD(array1: A, fun: A => A, maxLvl: Int = 8): A = {
+    logger.info(s"one dimention transform with max level is ${maxLvl}")
     val n = array1.length
     val array2 = new A(n)
     var offSet = 0

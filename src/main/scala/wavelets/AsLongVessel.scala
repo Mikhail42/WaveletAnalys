@@ -4,6 +4,8 @@ import math._
 import other.Integral
 
 class AsLongVessel(d: T = 4, a: T) extends ACBoundedWavelet(d, a) {
+  //override val logger = com.typesafe.scalalogging.Logger(getClass)
+
   override val wavename = "AsLongVessel"
-  override def psi(x: T): T = (d-abs(x))*exp(-sqr(x))
+  override def psi(x: T): T = (d - abs(x)) * exp(-sqr(x))
 }

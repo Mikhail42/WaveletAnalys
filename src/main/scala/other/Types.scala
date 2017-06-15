@@ -3,6 +3,8 @@ package other
 import math._
 
 object Types {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
+  
   def assertEquals(x: T, y: T, eps: T) =
     assert{ abs(x-y) < eps }
 

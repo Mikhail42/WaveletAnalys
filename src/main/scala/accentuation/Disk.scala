@@ -6,6 +6,7 @@ import image.Operation._
 import math._
 
 object Disk {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
 
   private val L: T = 3
   private val sigma: T = 5
@@ -20,6 +21,7 @@ object Disk {
    *  @return image with emphasis object
    */
   def emphasis(img: BI, r: Int): BI = {
+    logger.info(s"emphasis img started with radius ${r} and colorId=${colorId}")
     val mat = mapIT(getColorsComponents(img, colorId), toDouble)
     val resMat = emphasis(mat, r)
     Operation.createTiffImage(resMat)
@@ -32,6 +34,8 @@ object Disk {
    *  @return matrix with emphasis object
    */
   def emphasis(mat: M, r: Int): M = {
+    logger.info("emphasis matrix started with radius {}", r)
+
     val m = mat.length; val n = mat(0).length
     // L*L * exp(-invSigma2 * (x * x + y * y))
     val ls = (0 to r).map { x => L * exp(-invSigma2 * (x * x)) }

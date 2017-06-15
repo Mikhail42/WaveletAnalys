@@ -1,24 +1,14 @@
 package image
 
-import org.scalameter.api._
-import org.slf4j.LoggerFactory
-
 import ResourcesPath._
 import Operation._
 
-class OperationPerformance extends Bench.LocalTime {
-  val logger = LoggerFactory.getLogger(classOf[OperationPerformance])
+class OperationPerformance {
 
   val forDiskImg = Input.uploadImage(dir + forDisk)
   val forTiffImg = Input.uploadTiffImage(dir + forTiff)
 
-  def time[R](block: => R, defin: String) = {
-    val t0 = System.nanoTime()
-    val result = block // call-by-name
-    val t1 = System.nanoTime()
-    logger.info("{}: {} ms", defin, (t1 - t0) / 1000000)
-    result
-  }
+  import other.Time._
 
   time(image.Operation.getPixels(forDiskImg), "upload pixels from image")
   val grayMat = time(image.Operation.grayMatFromImage(forDiskImg), "matrix from gray image")

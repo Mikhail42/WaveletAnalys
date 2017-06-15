@@ -7,9 +7,13 @@ import other.Types._
 import other.Constants._
 
 object Mediate {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
+
   val white = 20
 
   def mediate(directly: MInt, mat: MInt): MInt = {
+    logger.info(s"mediate found started")
+
     val m = directly.length; val n = directly(0).length
 
     val mediateMat = createMBool(m, n)

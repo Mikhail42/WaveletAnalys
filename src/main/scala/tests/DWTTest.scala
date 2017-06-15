@@ -9,6 +9,7 @@ import image.Operation._
 import Base._
 
 object DWTTest {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
 
   def assertEquals(x: T, y: T, eps: T) =
     assert { abs(x - y) < eps }

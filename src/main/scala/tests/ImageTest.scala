@@ -10,6 +10,7 @@ import image.Operation._
 import Base._
 
 object ImageTest {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
 
   def imp = {import other.Types._}
   /** test on the allocation of the field direction */

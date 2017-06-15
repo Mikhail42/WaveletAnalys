@@ -7,6 +7,8 @@ import other.Types._
 import other.Constants._
 
 class TypesSpec extends FlatSpec {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
+
   "deltaX(1, 30)" should "cos(30 degree).round" in {
     assert(deltaX(1, 30) == cos(30 * Pi / 180).round)
   }

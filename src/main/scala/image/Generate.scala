@@ -8,6 +8,7 @@ import math._
 import other.Types._
 
 object Generate {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
 
   def generateImageMat: M = {
     // B is amplitude

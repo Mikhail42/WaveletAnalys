@@ -7,6 +7,8 @@ import other.Types._
 import other.Integral._
 
 class IntegralSpec extends FlatSpec {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
+
   "Integral from 0 to 2.1 by 0.1" should "has 21 point" in {
     assert(getN(0, 2.1, 0.1) == 21)
   }

@@ -11,14 +11,19 @@ import javax.imageio.ImageIO
 import java.awt.image._
 
 object Operation {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
 
   /** @param img some image
    *  @return all pixels as array from raster data
    */
-  def getPixels(img: BufferedImage): Array[Byte] =
+  def getPixels(img: BufferedImage): Array[Byte] = {
+    logger.info("try to get pixels fromimage")
     img.getRaster.getDataBuffer.asInstanceOf[DataBufferByte].getData
+  }
 
   def grayMatFromImage(img: BI): MInt = {
+    logger.info("try to convert gray image to matrix")
+
     val ar = getPixels(img)
     val m = img.getHeight; val n = img.getWidth
     val mat = createMInt(m, n)
@@ -32,6 +37,8 @@ object Operation {
   }
 
   def getColorsComponents(img: BI, colorID: Int): MInt = {
+    logger.info(s"get ${colorID}th color comonents from image")
+
     val n = img.getWidth; val m = img.getHeight
     val shift = (colorID - 1) * 8
     val res = createMInt(m, n)
@@ -40,6 +47,8 @@ object Operation {
     res
   }
   def getColorsComponents(img: BI): (MInt, MInt, MInt) = {
+    logger.info(s"get all colors comonents from image")
+
     val n = img.getWidth; val m = img.getHeight
     val B = createMInt(m, n) // >> 0
     val G = createMInt(m, n) // >> 8
@@ -54,6 +63,8 @@ object Operation {
   }
 
   def getColorsComponents(img: BI, cb: T, cg: T, cr: T): MInt = {
+    logger.info(s"get specific color comonents from image")
+
     val n = img.getWidth; val m = img.getHeight
     val res = createMInt(m, n)
     for (y <- 0 until m; x <- 0 until n) {

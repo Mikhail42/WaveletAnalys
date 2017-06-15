@@ -8,9 +8,12 @@ import javax.swing._
 import other.Types._
 
 object Output {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
 
-  def saveImage(im: java.awt.image.BufferedImage, fileName: String, format: String): Unit =
+  def saveImage(im: java.awt.image.BufferedImage, fileName: String, format: String): Unit = {
+    logger.info(s"try to save image to file with name ${fileName}")
     javax.imageio.ImageIO.write(im, format, new java.io.File(fileName))
+  }
 
   def saveImage(mat: MInt, fileName: String): Unit = {
     val outImg = Operation.createTiffImage(mat)

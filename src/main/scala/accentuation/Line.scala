@@ -6,6 +6,7 @@ import math._
 
 /** to accentuation line */
 object Line {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
 
   /** @param img -- image to accentuation line
    *  @param r -- inner radius of line-filter
@@ -14,6 +15,7 @@ object Line {
    *  @return image with accentuation line
    */
   def accent(img: BI, theta: Int, r: Int): BI = {
+    logger.info("accentuation line on image started with radius {} and theta {}", Array(r, theta))
     val resMat: MInt = accent(imgToMInt(img), theta, r)
     Operation.createTiffImage(resMat)
   }
@@ -22,6 +24,8 @@ object Line {
    *  using a #par.map
    */
   def accent(mat: MInt, theta: Int, r: Int): MInt = {
+    logger.info("accentuation line on matrix started with radius {} and theta {}", Array(r, theta))
+
     val m = mat.length; val n = mat(0).length
     val inR = r
     val outR = 2 * r // outer radius of line-filter

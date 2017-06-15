@@ -7,8 +7,11 @@ import other.Types._
 import other.Constants._
 
 object Histogram {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
 
   def histogram(img: BI): Array[Int] = {
+    logger.info(s"histogram calculation started")
+
     val res = new AInt(256)
     val mat = imgToMInt(img)
     val m = mat.length; val n = mat(0).length
@@ -18,8 +21,10 @@ object Histogram {
   }
 
   private def twoMaxHistogramtInds(gi: AInt) = {
-    val absMax = gi.max
-    val indAbsMax = gi.indexOf(absMax)
+    logger.info(s"both first and last maxs histogram calculation started")
+
+    val indAbsMax = gi.indexOf(gi.max)
+
     val sum1 = (5 to indAbsMax).map { gi(_) }.sum
     val sum2 = (indAbsMax until 250).map { gi(_) }.sum
     val indLocMax =
@@ -35,6 +40,7 @@ object Histogram {
   }
 
   private def minHistogramInd(gi: AInt) = {
+    logger.info(s"min histogram index calculation started")
     val (ind1, ind2) = twoMaxHistogramtInds(gi)
     println(ind1, ind2)
     val mn = (ind1 to ind2).map { gi(_) }.min
@@ -42,6 +48,7 @@ object Histogram {
   }
 
   def minHistogram(img: BI): Int = {
+    logger.info(s"min histogram calculation started")
     val gi = histogram(img)
     minHistogramInd(gi)
   }

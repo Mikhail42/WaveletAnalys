@@ -9,6 +9,7 @@ import other.Constants._
 import image.Operation._
 
 object Compare {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
 
   /** compare binary images
    *  @param img1 -- my image: type == 10, all values is -1 or 0
@@ -16,10 +17,12 @@ object Compare {
    *  @return pair (errorWhite/white, errorBlack/black)
    */
   def compareBinaryImages(img1: BI, img2: BI): (T, T) = {
+    logger.info("compareBinaryImages started")
+
     val pixs1 = getPixels(img1)
     val pixs2 = getPixels(img2)
     if (pixs1.length != pixs2.length)
-      throw new Exception("Probably, Image Format Exception or Size Image Exception")
+      throw new exceptions.ImageInfoException("Probably, Image Format Exception or Size Image Exception")
     val n = pixs1.length
     var white = 0
     var errorWhite = 0
@@ -38,7 +41,7 @@ object Compare {
           errorBlack += 1
       }
     }
-    if (white + black != n) throw new Exception("Images to compare must be binary")
+    if (white + black != n) throw new exceptions.ImageInfoException("Images to compare must be binary")
     (errorWhite.toDouble / white, errorBlack.toDouble / black)
   }
 }

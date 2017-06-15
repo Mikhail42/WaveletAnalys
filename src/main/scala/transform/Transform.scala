@@ -4,8 +4,10 @@ import other.Types._
 import image._
 
 object Transform {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
 
   def DaubechiesForwardImage(img: BI, order: Int, trans: String): BI = {
+    logger.info(s"DaubechiesForwardImage of image")
     val mat: M =
       mapIT(Operation.getColorsComponents(img, 2), (x: Int) => x.toDouble)
     val g: MInt =
@@ -17,6 +19,7 @@ object Transform {
   /** @param ord -- order of Daubechies
    */
   def DaubechiesForwardImageWithRotate(img: BI, ord: Int = 1): (BI, BI) = {
+    logger.info(s"DaubechiesForwardImage of image with rotate")
     import transform.DTransform._
     import image.Operation._
     val m = img.getHeight; val n = img.getWidth
@@ -48,6 +51,7 @@ object Transform {
    *                image rotate => 2
    */
   def cwt(wave: wavelets.ICWavelet, a: T, id: Int = 1, img: BI): (BI, BI, BI) = {
+    logger.info(s"CWT of image with a=${a} and id=${id}")
     val cwt = new transform.CTransform(wave)
     def trMor: M => M = cwt.transform(_, 0, a)
     val wavename = wave.wavename
@@ -83,6 +87,7 @@ object Transform {
     }
 
     def mediate(directly: MInt, resMatImg: MInt) {
+      logger.info(s"mediate started")
       val white = postprocessing.Mediate.white
       val mediateMat = createMBool(m, n)
       for (y <- 0 until m; x <- 0 until n)

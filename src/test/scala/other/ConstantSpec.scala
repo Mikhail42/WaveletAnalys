@@ -7,6 +7,8 @@ import other.Types._
 import other.Constants._
 
 class ConstantSpec extends FlatSpec {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
+
   "sin(30)" should "0.5" in {
     assertEquals(other.Constants.sins(30), 0.5, 1e-6)
   }

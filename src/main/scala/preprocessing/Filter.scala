@@ -4,10 +4,14 @@ import other.Types._
 import math._
 
 object Filter {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
+
   val MAX = 255
   val MIN = 0
 
   def smallFilter(img: BI, amountBorder: Int): BI = {
+    logger.info(s"smallFilter started")
+
     val mat = imgToMInt(img)
     val m = mat.length; val n = mat(0).length
     def isWhite(x: Int): Boolean = (x == 255)
@@ -57,12 +61,16 @@ object Filter {
   }
 
   def histogramFilterMin(img: BI): BI = {
+    logger.info(s"histogramFilterMin started")
+
     val ind = postprocessing.Histogram.minHistogram(img)
     println(ind)
     image.Operation.toBinary(img, ind)
   }
 
   def histogramFilterMax(img: BI): BI = {
+    logger.info(s"histogramFilterMax started")
+
     val gi = postprocessing.Histogram.histogram(img)
     val maxInd = 5 + gi.indexOf((5 until 250).map { gi(_) }.max)
     val ind1 = maxInd - 1
@@ -78,6 +86,8 @@ object Filter {
   }
 
   def gaus(mat: MInt, r: Int, sigma: T): M = {
+    logger.info(s"gaus filter on matrix started with r=${r} and sigma=${sigma}")
+
     val L = sqrt(1.0 / (2 * Pi * sqr(sigma)))
     val invSigma2 = 1.0 / (2 * sqr(sigma))
     val m = mat.length; val n = mat(0).length
@@ -99,6 +109,8 @@ object Filter {
   }
 
   def MSR(img: BI, r: Int): BI = {
+    logger.info(s"MSR of image started with r=${r}")
+
     val RGB = image.Operation.getColorsComponents(img)
     val R = RGB._1; val G = RGB._2; val B = RGB._3
     val m = R.length; val n = R(0).length
@@ -107,6 +119,8 @@ object Filter {
       sumMat(i)(j) = R(i)(j) + G(i)(j) + B(i)(j)
 
     def getMSR(id: Int): M = {
+      logger.info(s"MSR of matrix started (colorId=${id})")
+
       val (mat, sigma_i) = id match {
         case 1 => (B, 15)
         case 2 => (G, 80)
@@ -116,7 +130,7 @@ object Filter {
       val (_G, b, alpha, beta) = (192, -30, 125, 46)
       val res = createM(m, n)
       val ga = gaus(mat, r, sigma_i)
-      for (i <- r until m - r; j <- 0 until n - r) {
+      for (i <- 0 until m; j <- 0 until n) {
         if (mat(i)(j) != 0 && mat(i)(j) != MAX && ga(i)(j) != 0) {
           val C_ij = beta * (log(alpha * (mat(i)(j))) - log(sumMat(i)(j)))
           res(i)(j) = _G * (C_ij * (log(mat(i)(j)) - log(ga(i)(j))) + b)
@@ -132,29 +146,9 @@ object Filter {
     image.Operation.createTiffImage(resG)
   }
 
-  def inverse(mat: MInt) {
-    val m = mat.length; val n = mat(0).length
-    for (i <- 0 until m; j <- 0 until n)
-      mat(i)(j) = MAX - mat(i)(j)
-  }
-  def inverse(mat: M) {
-    val m = mat.length; val n = mat(0).length
-    for (i <- 0 until m; j <- 0 until n)
-      mat(i)(j) = MAX - mat(i)(j)
-  }
-  def inverse(img: BI): BI = {
-    val mat = imgToMInt(img)
-    inverse(mat)
-    intMatToImg(mat)
-  }
-  def fullInverse(img: BI): BI = {
-    val mats = (1 to 3).map { image.Operation.getColorsComponents(img, _) }
-    mats.map { inverse(_) }
-    image.Operation.createImage((mats(0), mats(1), mats(2)), img.getType)
-  }
-
   /** x => MAX*(x-l)/(h-l) */
   def constrast(mat: MInt, h: Int, l: Int) {
+    logger.info(s"contrast matrix started with h=${h} and l=${l}")
     val m = mat.length; val n = mat(0).length
     def toNew(x: Int) =
       if (x > h) MAX
@@ -166,6 +160,7 @@ object Filter {
 
   /** x => 255*(x-l)/(h-l) */
   def constrast(img: BI, h: Int = 200, l: Int = 50) {
+    logger.info(s"contrast image started with h=${h} and l=${l}")
     val m = img.getHeight; val n = img.getWidth
     def toNew(x: Int) =
       if (x > h) 255
@@ -182,6 +177,7 @@ object Filter {
   }
 
   def adaptiveContrast(mat: MInt) {
+    logger.info(s"adaptiveContrast matrix started")
     val (mn, mx) = postprocessing.Statistic.minMax(mat)
     val m = mat.length; val n = mat(0).length
     def toNew(x: Int) =
@@ -193,12 +189,14 @@ object Filter {
   }
 
   def adaptiveContrast(mat: M) {
+    logger.info(s"adaptiveContrast matrix started")
     val (mn, mx) = postprocessing.Statistic.minMax(mat)
+    val c = (MAX - MIN) / (mx - mn)
     val m = mat.length; val n = mat(0).length
     def toNew(x: T): T =
       if (x > mx) MAX
       else if (x < mn) MIN
-      else MAX * (x - mn) / (mx - mn)
+      else (x - mn) * c
     for (i <- 0 until m; j <- 0 until n)
       mat(i)(j) = toNew(mat(i)(j))
   }

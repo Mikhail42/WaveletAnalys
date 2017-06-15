@@ -5,23 +5,16 @@ import other.Types._
 import image._
 
 object Vessel {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
 
   val stepTheta = 10
   val border = 128
 
   def accent(img: BI, r: Int, s: Int, extr: String): (BI, BI, BI) = {
-    println(s)
-    //val mat = getMInt(img)
-    //image.Output.visible(preprocessing.Alignment.retinexIJ(img), "retinex")
-    //val matUpd = preprocessing.Alignment.illumination(mat, s)
-    //preprocessing.Filtr.inverse(mat)
-    //val imgPrep = getBI(mat)
-    //image.Output.visible(imgPrep, "preproc")
+    logger.info(s"accentuation vessel on image started with radius=${r} and s=${s}, ${extr}")
 
     val (vesselM, directMInt, thinVesselMat): (MInt, MInt, MInt) =
-      accent(imgToMInt(img), r, extr)
-    //val mx = maxM(vesselM); val mn = minM(vesselM)
-    //preprocessing.Filtr.constrast(vesselM, mx, mn)
+      accent(imgToMInt(img), r, s, extr)
 
     val vesImg = image.Operation.createTiffImage(vesselM)
     val directImg = image.Operation.createTiffImage(directMInt)
@@ -29,12 +22,16 @@ object Vessel {
     (vesImg, directImg, thinVesselImg)
   }
 
-  def accent(mat: MInt, d1: Int, extr: String): (MInt, MInt, MInt) = {
+  def accent(mat: MInt, d1: Int, s: Int, extr: String): (MInt, MInt, MInt) = {
+    logger.info(s"accentuation vessel on matix started with radius ${d1} and s=${s}, ${extr}")
+
+    val matUpd = preprocessing.Illumination.illumination(mat, s)
+
     val m = mat.length; val n = mat(0).length
     val (lr1, rr1) =
       if (d1 % 2 == 0) (d1 / 2, d1 / 2)
       else (d1 / 2, d1 / 2)
-    println(s"lr1 $lr1 rr1 $rr1")
+
     val (lr2, rr2) = (lr1 + 2, rr1 + 2)
     val antiL = -lr1
     val antiR = -rr1
@@ -45,7 +42,6 @@ object Vessel {
         else if (i > 0) antiR
         else antiL
     }
-    println(core.sum)
 
     def locMask(i: Int, j: Int, theta: Int): Int = {
       var sum: Int = 0
@@ -110,9 +106,9 @@ object Vessel {
 
   def minMaxSearch(i: Int, j: Int, locMask: Int => Int, matIJ: Int) =
     if (matIJ < border) minSearch(i, j, locMask)
-    else minSearch(i, j, locMask)
+    else maxSearch(i, j, locMask)
 
   def maxMinSearch(i: Int, j: Int, locMask: Int => Int, matIJ: Int) =
-    if (matIJ >= border) minSearch(i, j, locMask)
+    if (matIJ < border) maxSearch(i, j, locMask)
     else minSearch(i, j, locMask)
 }

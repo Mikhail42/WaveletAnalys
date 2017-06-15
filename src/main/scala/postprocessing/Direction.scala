@@ -7,6 +7,8 @@ import other.Types._
 import other.Constants._
 
 object Direction {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
+
   /** search direction matrix
    *  use a parallel mapping (outer cycle)
    *  @param mat -- matrix to search direction
@@ -15,6 +17,8 @@ object Direction {
    *  @return direction matrix
    */
   def direction(mat: MInt, R: Int = 5, steptheta: Int = 5, extr: String = "ARGMIN"): MInt = {
+    logger.info(s"earch direction matrix started with radius=${R} and stepTheta=${steptheta}, ${extr}")
+
     val m = mat.length; val n = mat(0).length
     val rs = (-R to R)
     def dys(theta: Int) = rs.map { r => deltaY(r, theta) }
@@ -73,6 +77,9 @@ object Direction {
   }
 
   /** search a image direction */
-  def direction(img: BI): BI = intMatToImg(direction(imgToMInt(img)))
+  def direction(img: BI): BI = {
+    logger.info(s"search direction image started without params")
+    intMatToImg(direction(imgToMInt(img)))
+  }
 
 }

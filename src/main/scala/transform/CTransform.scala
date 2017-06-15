@@ -7,8 +7,10 @@ import image.Operation._
 import math._
 
 class CTransform(wavelet: ICWavelet, dx: Int = 4, dy: Int = 4) {
+  val logger = com.typesafe.scalalogging.Logger(getClass)
 
   def transform(mat: M, theta: Int, a: T): M = {
+    logger.info(s"two dimention transform with a=${a} and theta=${theta}")
     val sx = (dx / a).floor.toInt
     val sy = (dy / a).floor.toInt
     val core: M = wavelet.core(sx, sy, theta, a)
@@ -25,9 +27,11 @@ class CTransform(wavelet: ICWavelet, dx: Int = 4, dy: Int = 4) {
     res
   }
 
-  def WT(img: BI, theta: Int, a: T): M =
+  def WT(img: BI, theta: Int, a: T): M = {
+    logger.info(s"two dimention transform of image (green components) with a=${a} and theta=${theta}")
     transform(
       mapIT(getColorsComponents(img, 2), (x: Int) => x.toDouble),
       theta,
       a)
+  }
 }
