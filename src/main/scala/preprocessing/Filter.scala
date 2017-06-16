@@ -16,7 +16,7 @@ object Filter {
     val m = mat.length; val n = mat(0).length
     def isWhite(x: Int): Boolean = (x == 255)
     var S = 0
-    def analysSmallFilter(i: Int, j: Int, delete: B = false) {
+    def analysSmallFilter(i: Int, j: Int, delete: Boolean = false) {
       var centralX = j
       var dy = 0
       while (i + dy >= 0 && isWhite(mat(i + dy)(centralX))) {

@@ -8,7 +8,7 @@ object Base {
   logger.info("base directory is {}", dir)
 
   val forVessel = "01_dr.jpg" //2//"image_023.jpg" //"
-  val forDisk = "1.jpg" //"image_023.jpg" //""
+  val forDisk = "image_023.jpg" //"""1.jpg" //
   val forTiff = "01_g.tif"
   val forComp1 = "02_dr_out.jpg"
   val forComp2 = "02_dr.tif"

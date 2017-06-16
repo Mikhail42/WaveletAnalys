@@ -21,6 +21,7 @@ object Integral {
    *  @see simpson
    */
   def simpson2(f: (T, T) => T, xBeg: (T, T), xEnd: (T, T), h0: T): T = {
+    logger.info("simpson2 started")
     val n1 = getN(xBeg._1, xEnd._1, h0)
     val h1 = (xEnd._1 - xBeg._1) / n1
     val n2 = getN(xBeg._2, xEnd._2, h0)

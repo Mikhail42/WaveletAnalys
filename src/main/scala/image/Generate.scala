@@ -15,7 +15,7 @@ object Generate {
     // C is frequency
     val B: T = 5; val C: T = 10;
     val size = 100
-    val picture: M = other.Types.createWhiteMat(size, size)
+    val picture: M = Array.fill[T](size, size)(255)
     for (y <- 0 until size; x <- 0 until size)
       for (A <- 30 to 190 by 30)
         picture(y)(x) =
@@ -43,7 +43,7 @@ object Generate {
   }
 
   def generateImageMat(amplit: T, freq: T, w: Int, h: Int): BI = {
-    val picture: M = other.Types.createWhiteMat(w, h)
+    val picture: M = Array.fill[T](h, w)(255)
     for (y <- 0 until h; x <- 0 until w)
       for (A <- 30 to 190 by 30)
         picture(y)(x) =

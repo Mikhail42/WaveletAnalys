@@ -12,9 +12,11 @@ object AnalysTest {
   /** vessels accentuation test (0 until 180 by 10 degree) */
   def vesselSegmentTest {
     val fileName = dir + forVessel
+    logger.info(s"vessel assentuation test started for ${fileName}")
     val img = Input.uploadSubimage(fileName)
+    val mat = image.Operation.getColorsComponents(img, 2)
     for (r <- 13 to 14; s <- 2 to 2) {
-      val res = accentuation.Vessel.accent(img, r, s, "MAX")
+      val res = accentuation.Vessel.accent(mat, r, s, "MAX")
       Output.visible(res._1, s"out ${r} ${s}")
     }
   }
@@ -22,12 +24,11 @@ object AnalysTest {
   /** disk accentuation test */
   def diskTest {
     val fileName = dir + forDisk
-    println(fileName)
+    logger.info(s"disc assentuation test started for ${fileName}")
     val img = image.Input.uploadImage(fileName)
     for (r <- 2 to 25 by 2) {
       val res = accentuation.Disk.emphasis(img, r)
-      val res2 = preprocessing.Inverse.inverse(res)
-      image.Output.visible(res2, "Disc Test" + r)
+      image.Output.visible(res, "Disc Test" + r)
     }
   }
 }

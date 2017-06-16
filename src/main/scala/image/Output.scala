@@ -1,10 +1,6 @@
 package image
 
-//import java.awt._
-//import java.io.File
-//import javax.imageio.ImageIO
 import javax.swing._
-//import java.awt.image._
 import other.Types._
 
 object Output {
@@ -16,18 +12,35 @@ object Output {
   }
 
   def saveImage(mat: MInt, fileName: String): Unit = {
+    logger.info(s"try to save int matrix as image to file with name ${fileName}")
     val outImg = Operation.createTiffImage(mat)
     saveImage(outImg, fileName, "tif")
   }
 
-  def saveImage(mat: M, fileName: String): Unit =
+  def saveImage(mat: M, fileName: String): Unit = {
+    logger.info(s"try to save double matrix as image to file with name ${fileName}")
     saveImage(Operation.toColorMInt(mat), fileName)
+  }
+
+  /** visualization matrix through frame */
+  def visible(mat: MInt, title: String) {
+    visible(image.Operation.createTiffImage(mat), title)
+  }
+
+  /** visualization matrix through frame */
+  def visible(mat: M, title: String) {
+    visible(image.Operation.createTiffImage(mat), title)
+  }
 
   /** visualization image through frame */
   def visible(img: java.awt.image.BufferedImage, title: String) {
-    val frame = new JFrame
-    val icon = new ImageIcon(image.Operation.scale(img, 800.0 / img.getHeight))
+    val imgToVisible =
+      if (img.getHeight > 800) image.AffineTransform.scale(img, 800.0 / img.getHeight)
+      else img
+    val icon = new ImageIcon(imgToVisible)
     val label = new JLabel(icon)
+
+    val frame = new JFrame
     frame.getContentPane().add(label, java.awt.BorderLayout.CENTER)
     frame.pack()
     frame.setName(title)
@@ -37,6 +50,7 @@ object Output {
   }
 
   def visualisationAndSaveMat(mat: M, frameName: String, fileName: String) {
+    logger.info(s"try to visualisation and save matrix to file with name ${fileName}")
     val gRes = Operation.toColorMInt(mat)
     val grayImg = Operation.createTiffImage(gRes)
     Output.visible(grayImg, frameName)

@@ -27,13 +27,13 @@ object Transform {
     val resTheta = createMInt(m, n)
     for (theta <- 0 until 180 by 10) {
       println(theta)
-      val imgT: BI = rotate(img, theta)
+      val imgT: BI = image.AffineTransform.rotate(img, theta)
       val matT = image.Operation.getColorsComponents(imgT, 2).
         map { _.map { 255 - _.toDouble } }
       val gT: MInt = daubechies(matT, order = 1, transformID = "str").
         map { _.map { _.toInt } }
       val resImgT: BI = Operation.createTiffImage(gT)
-      val resImg: BI = inverseRotate(resImgT, -theta, img.getWidth, img.getHeight)
+      val resImg: BI = image.AffineTransform.inverseRotate(resImgT, -theta, img.getWidth, img.getHeight)
       val locMat = image.Operation.getColorsComponents(resImg, 2)
       for (i <- 0 until m; j <- 0 until n)
         if (locMat(i)(j) > resTr(i)(j)) {
@@ -65,11 +65,11 @@ object Transform {
       cwt.transform(mat, theta, a)
     def locTr2(theta: Int): M = {
       import Operation._
-      val imgR: BI = rotate(img, theta)
+      val imgR: BI = image.AffineTransform.rotate(img, theta)
       val matR: M = imgToM(imgR)
       val matTrR: MInt = mapTI(trMor(matR), (x: T) => x.toInt)
       val imgTrR: BI = createTiffImage(matTrR)
-      val imgTr: BI = inverseRotate(imgTrR, -theta, img.getWidth, img.getHeight)
+      val imgTr: BI = image.AffineTransform.inverseRotate(imgTrR, -theta, img.getWidth, img.getHeight)
       imgToM(imgTr)
     }
 
@@ -88,7 +88,7 @@ object Transform {
 
     def mediate(directly: MInt, resMatImg: MInt) {
       logger.info(s"mediate started")
-      val white = postprocessing.Mediate.white
+      val white = postprocessing.Mediate.whiteBorder
       val mediateMat = createMBool(m, n)
       for (y <- 0 until m; x <- 0 until n)
         if (resMatImg(y)(x) > white) {
