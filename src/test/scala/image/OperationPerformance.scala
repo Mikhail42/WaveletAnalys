@@ -25,12 +25,12 @@ class OperationPerformance {
 
   time(image.Operation.createImage(RGBDisc, forDiskImg.getType), "create image from the matrix")
 
-  time(image.Operation.rotate(forDiskImg, 30), "rotate image (30 deg) by java.awt.geom")
+  time(image.AffineTransform.rotate(forDiskImg, 30), "rotate image (30 deg) by java.awt.geom")
 
   {
     val mat = other.Types.imgToM(forDiskImg)
-    time(image.Operation.rotate(mat, 30, mat.length, mat(0).length), "rotate matrix from me")
+    time(image.AffineTransform.rotate(mat, 30, mat.length, mat(0).length), "rotate matrix from me")
   }
 
-  time(image.Operation.scale(forDiskImg, 2), "scale in 2 times")
+  time(image.AffineTransform.scale(forDiskImg, 2), "scale in 2 times")
 }
