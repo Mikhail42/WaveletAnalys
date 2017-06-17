@@ -4,12 +4,16 @@ import other.Types._
 object Integral {
   val logger = com.typesafe.scalalogging.Logger(getClass)
 
+  private def sum(f: T => T, x1: T, x2: T, h: T) =
+    (x1 until x2 by h).map(f).sum
+
   /** return min n: n = 2*N+1 & (x2-x1)/h0 <= n */
   def getN(x1: T, x2: T, h0: T): Int =
     ((x2 - x1) / h0).ceil.toInt | 1
 
   /** @see "Simpsons rule" in Internet */
   def simpson(f: T => T, x1: T, x2: T, h0: T): T = {
+
     val n = getN(x1, x2, h0)
     val h = (x2 - x1) / n
     val s1 = sum(f, x1 + h, x2 - h, 2 * h)

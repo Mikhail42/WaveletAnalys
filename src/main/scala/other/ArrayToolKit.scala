@@ -5,9 +5,11 @@ import other.Types._
 object ArrayToolKit {
   val logger = com.typesafe.scalalogging.Logger(getClass)
 
-  def copyPart(ar: A, ind: Int, length: Int): A = {
+  /** @see Array.copy
+   */
+  def copyPart(ar: A, startSourceIndex: Int, length: Int): A = {
     val res = new A(length)
-    for (i <- 0 until length) res(i) = ar(i + ind)
+    Array.copy(ar, startSourceIndex, res, 0, length)
     res
   }
 

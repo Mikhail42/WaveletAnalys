@@ -23,6 +23,7 @@ object Compare {
     val pixs2 = getPixels(img2)
     if (pixs1.length != pixs2.length)
       throw new exceptions.ImageInfoException("Probably, Image Format Exception or Size Image Exception")
+
     val n = pixs1.length
     var white = 0
     var errorWhite = 0
@@ -30,6 +31,7 @@ object Compare {
     var errorBlack = 0
     val m1: Byte = -1 // probably, it is white
     val m0: Byte = 0 // probably, it is black
+
     for (i <- 0 until n) {
       if (pixs2(i) == m1) {
         white += 1
@@ -40,8 +42,12 @@ object Compare {
         if (pixs1(i) != m0)
           errorBlack += 1
       }
+      // else exception, see down
     }
-    if (white + black != n) throw new exceptions.ImageInfoException("Images to compare must be binary")
+
+    if (white + black != n)
+      throw new exceptions.ImageInfoException("Images to compare must be binary")
+
     (errorWhite.toDouble / white, errorBlack.toDouble / black)
   }
 }

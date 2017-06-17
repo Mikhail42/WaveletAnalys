@@ -8,6 +8,18 @@ import other.Types._
 object Statistic {
   val logger = com.typesafe.scalalogging.Logger(getClass)
 
+  def mean(ar: A): T = ar.sum / ar.length
+  def disp(ar: A, aver: T): T = {
+    var sum: T = 0
+    for (i <- 0 until ar.length)
+      sum += ar(i) * ar(i)
+    sum / ar.length - aver * aver
+  }
+  def disp(ar: A): T = {
+    val aver = mean(ar)
+    disp(ar, aver)
+  }
+
   /** approximate in 2 times faster then simple min and max cuncurently */
   def minMax(mat: M) = {
     logger.trace(s"min-max of matrix started")
@@ -35,8 +47,7 @@ object Statistic {
   /** X => EX^2-(EX)^2 */
   def disp(mat: M, aver: T): T = {
     logger.trace(s"dispertion of matrix started with averange=${aver}")
-    mat.map { _.map { y => y * y }.sum }.sum /
-      productSize(mat) - aver * aver
+    mat.map { ar => disp(ar, aver) }.sum / mat.length - aver * aver
   }
 
   /** X => EX */
@@ -52,8 +63,15 @@ object Statistic {
     logger.trace(s"correlation two matrix started")
     val aver1 = aver(mat1); val aver2 = aver(mat2)
     var sum: T = 0
-    for (i <- 0 until mat1.length; j <- 0 until mat1(0).length)
-      sum += mat1(i)(j) * mat2(i)(j)
+    for (i <- 0 until mat1.length) {
+      // for more accurate
+      // mean number + mean number is more accurate than small number + big number
+      var locSum: T = 0
+      for (j <- 0 until mat1(0).length)
+        locSum += mat1(i)(j) * mat2(i)(j)
+      sum += locSum
+    }
+
     sum / productSize(mat1) - aver1 * aver2
   }
 
@@ -132,6 +150,7 @@ object Statistic {
   def localEX(mat: MInt, sy: Int, sx: Int): MInt = {
     logger.debug(s"local meaning on matrix calculation started with sx=${sx} and sy=${sy}")
     val m = mat.length; val n = mat(0).length
+
     // fast sum in strings: O(h*w) operations
     val sumStr = createMInt(m, n)
     val dxs = -sx to sx
@@ -140,6 +159,7 @@ object Statistic {
       for (x <- sx + 1 until n - sx)
         sumStr(y)(x) = sumStr(y)(x - 1) + mat(y)(x + sx) - mat(y)(x - sx - 1)
     }
+
     // fast sum in columns of sum of string: O(h*w) operations
     val sumCol = createMInt(m, n)
     val dys = -sy to sy
@@ -164,6 +184,7 @@ object Statistic {
       for (x <- n - sx + 1 until n)
         mx(y)(x) = sumCol(y)(x) / SY
     }
+
     // for y: ...
     for (x <- sx until n - sx) {
       for (y <- 0 until sy)
@@ -171,6 +192,7 @@ object Statistic {
       for (y <- m - sy + 1 until m)
         mx(y)(x) = sumCol(y)(x) / SX
     }
+
     // angles
     for (x <- 0 until sx) {
       for (y <- 0 until sy)
@@ -184,6 +206,7 @@ object Statistic {
       for (x <- n - sx + 1 until n)
         mx(y)(x) = mat(y)(x)
     }
+
     mx
   }
 
@@ -193,7 +216,7 @@ object Statistic {
    */
   def localEX2(mat: M, sy: Int, sx: Int): M = {
     logger.debug(s"local meaning of Matrix Sqruare Foreach started with sx=${sx} and sy=${sy}")
-    val mat2 = mat.map { str => str.map { x => x * x } }
+    val mat2 = mapTT(mat, x => x * x)
     localEX(mat2, sy, sx)
   }
 
@@ -203,7 +226,7 @@ object Statistic {
    */
   def localEX2(mat: MInt, sy: Int, sx: Int): MInt = {
     logger.debug(s"local meaning of Matrix Sqruare Foreach started with sx=${sx} and sy=${sy}")
-    val mat2: MInt = mat.map { str => str.map { x => x * x } }
+    val mat2 = mapII(mat, x => x * x)
     localEX(mat2, sy, sx)
   }
 

@@ -42,7 +42,7 @@ object Direction {
       val mx = myx.sum
       val mx2 = myx.map { x => x * x }.sum
       val s = (2 * R.toInt + 1).toDouble
-      (mx2.toDouble / s - (mx * mx).toDouble / (s * s))
+      mx2.toDouble / s - (mx * mx).toDouble / (s * s)
     }
 
     def argDisp =

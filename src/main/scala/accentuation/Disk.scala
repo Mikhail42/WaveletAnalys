@@ -8,9 +8,17 @@ import math._
 object Disk {
   val logger = com.typesafe.scalalogging.Logger(getClass)
 
-  private val L: T = 3
-  private val sigma: T = 5
-  private val invSigma2: T = 1.0 / (sigma * sigma)
+  lazy val L: T = {
+    val l = 3
+    logger.debug(s"Disk.L = ${l}")
+    l
+  }
+  lazy val sigma: T = {
+    val s = 5
+    logger.debug(s"Disk.sigma = ${s}")
+    s
+  }
+  private lazy val invSigma2: T = 1.0 / (sigma * sigma)
 
   /** disk emphasis
    *  use a #colorId color-components as default

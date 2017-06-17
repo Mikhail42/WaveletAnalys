@@ -44,21 +44,17 @@ object Vessel {
 
     def locMask(i: Int, j: Int, theta: Int): Int = {
       var sum: Int = 0
-      for (r <- -lr2 to rr2) {
-        val dx: Int = deltaX(r, theta)
-        val dy: Int = deltaY(r, theta)
-        sum += mat(i + dy)(j + dx) * core(r + lr2)
-      }
+      for (r <- -lr2 to rr2)
+        sum += mat(i + deltaY(r, theta))(j + deltaX(r, theta)) * core(r + lr2)
       sum
     }
 
-    def getTransAndDir(i: Int, j: Int): (Int, Int) =
-      extr match {
-        case "MAX"    => maxSearch(i, j, locMask(i, j, _))
-        case "MIN"    => minSearch(i, j, locMask(i, j, _))
-        case "MAXMIN" => maxMinSearch(i, j, locMask(i, j, _), mat(i)(j))
-        case "MINMAX" => minMaxSearch(i, j, locMask(i, j, _), mat(i)(j))
-      }
+    val search: (Int, Int, Int => Int) => (Int, Int) = extr match {
+      case "MAX" => maxSearch
+      case "MIN" => minSearch
+    }
+
+    def getTransAndDir(i: Int, j: Int): (Int, Int) = search(i, j, locMask(i, j, _))
 
     val resTranform: MInt = createMInt(m, n)
     val trueDir: MInt = createMInt(m, n)
@@ -77,7 +73,7 @@ object Vessel {
     (resTranform, trueDir, res)
   }
 
-  def maxSearch(i: Int, j: Int, locMask: Int => Int): (Int, Int) = {
+  private def maxSearch(i: Int, j: Int, locMask: Int => Int): (Int, Int) = {
     var mx = Int.MinValue
     var dir = 0
     for (theta <- 0 until 180 by stepTheta) {
@@ -90,7 +86,7 @@ object Vessel {
     (mx, dir)
   }
 
-  def minSearch(i: Int, j: Int, locMask: Int => Int): (Int, Int) = {
+  private def minSearch(i: Int, j: Int, locMask: Int => Int): (Int, Int) = {
     var mn = Int.MaxValue
     var dir = 0
     for (theta <- 0 until 180 by stepTheta) {
@@ -102,12 +98,4 @@ object Vessel {
     }
     (mn, dir)
   }
-
-  def minMaxSearch(i: Int, j: Int, locMask: Int => Int, matIJ: Int) =
-    if (matIJ < border) minSearch(i, j, locMask)
-    else maxSearch(i, j, locMask)
-
-  def maxMinSearch(i: Int, j: Int, locMask: Int => Int, matIJ: Int) =
-    if (matIJ < border) maxSearch(i, j, locMask)
-    else minSearch(i, j, locMask)
 }

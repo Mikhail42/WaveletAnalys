@@ -19,14 +19,19 @@ object Types {
 
   val colorId = 2
 
-  def imgToMInt(img: BI): MInt =
+  def imgToMInt(img: BI): MInt = {
     if (img.getType != java.awt.image.BufferedImage.TYPE_BYTE_GRAY)
       image.Operation.getColorsComponents(img, colorId)
     else image.Operation.grayMatFromImage(img)
+  }
 
-  def imgToM(img: BI): M = mapIT(imgToMInt(img), toDouble(_: Int))
+  def imgToM(img: BI): M = {
+    logger.debug(s"convert image to double matrix")
+    mapIT(imgToMInt(img), toDouble(_: Int))
+  }
   def intMatToImg(mat: MInt): BI =
     image.Operation.createTiffImage(mat)
+
   def doubleMatToImg(mat: M): BI = image.Operation.createTiffImage(mat)
 
   def sqr(a: T): T = a * a
@@ -44,8 +49,6 @@ object Types {
   def isBinary(x: Int) = (1 << log2(x)) == x
 
   type A = Array[Double]
-  def sum(f: T => T, x1: T, x2: T, h: T) =
-    (x1 until x2 by h).map(f).sum
   type ABool = Array[Boolean]
   type AInt = Array[Int]
   type ColectionBI = List[BI]
@@ -72,22 +75,42 @@ object Types {
     println
   }
 
-  def mapTT(mat: M, fun: T => T): M =
+  def mapTT(mat: M, fun: T => T): M = {
+    logger.trace("mapTT started")
     mat.map { _.map { x => fun(x) } }
-  def mapII(mat: MInt, fun: Int => Int): MInt =
+  }
+  def mapII(mat: MInt, fun: Int => Int): MInt = {
+    logger.trace("mapII started")
     mat.map { _.map { x => fun(x) } }
-  def mapTI(mat: M, fun: T => Int): MInt =
+  }
+  def mapTI(mat: M, fun: T => Int): MInt = {
+    logger.trace("mapTI started")
     mat.map { _.map { x => fun(x) } }
-  def mapIT(mat: MInt, fun: Int => T): M =
+  }
+  def mapIT(mat: MInt, fun: Int => T): M = {
+    logger.trace("mapIT started")
     mat.map { _.map { x => fun(x) } }
+  }
 
   def printMat(mat: M) {
     for (str <- mat) printAr(str)
     println
   }
 
-  def createMBool(m: Int, n: Int) = Array.ofDim[Boolean](m, n)
-  def createMByte(m: Int, n: Int) = Array.ofDim[Byte](m, n)
-  def createMInt(m: Int, n: Int) = Array.ofDim[Int](m, n)
-  def createM(m: Int, n: Int) = Array.ofDim[T](m, n)
+  def createMBool(m: Int, n: Int) = {
+    logger.trace("createMBool started")
+    Array.ofDim[Boolean](m, n)
+  }
+  def createMByte(m: Int, n: Int) = {
+    logger.trace("createMByte started")
+    Array.ofDim[Byte](m, n)
+  }
+  def createMInt(m: Int, n: Int) = {
+    logger.trace("createMInt started")
+    Array.ofDim[Int](m, n)
+  }
+  def createM(m: Int, n: Int) = {
+    logger.trace("createM started")
+    Array.ofDim[T](m, n)
+  }
 }
