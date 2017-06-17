@@ -61,7 +61,7 @@ class Vessel(mat: MInt, d1: Int, s: Int, stepTheta: Int = 10, border: Int = 128)
     logger.debug(s"accentuation vessel on matix started with diameter=${d1}")
 
     val resTranform: MInt = createMInt(m, n)
-    val trueDir: MInt = createMInt(m, n)
+    //val trueDir: MInt = createMInt(m, n)
     // 'par' is used for speedup in 2-3 times on my PC
     // My PC characters: 8 cores, Intel Core i7, 8GB RAM, GNU/Linux Debian 9. Current scalaVersion: 2.12.2
     (lr2 until m - rr2).par.map {
@@ -69,14 +69,15 @@ class Vessel(mat: MInt, d1: Int, s: Int, stepTheta: Int = 10, border: Int = 128)
         for (j <- lr2 until n - rr2) {
           val (trans, dir) = maxSearch(i, j)
           resTranform(i)(j) = if (trans < 128) 0 else 255
-          trueDir(i)(j) = dir
+          //trueDir(i)(j) = dir
         }
     }
 
-    val res = resTranform.map { _.map { _.toInt } }
-    postprocessing.Mediate.mediate(trueDir, res)
+    //val res = resTranform.map { _.map { _.toInt } }
+    //postprocessing.Mediate.mediate(trueDir, res)
 
-    (resTranform, trueDir, res)
+    //(resTranform, trueDir, res)
+    (resTranform, null, null)
   }
 
   private def maxSearch(i: Int, j: Int): (Int, Int) = {
