@@ -6,6 +6,10 @@ import other.Types._
 object Output {
   val logger = com.typesafe.scalalogging.Logger(getClass)
 
+  private val device = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+  private val screenWidth = device.getDisplayMode().getWidth();
+  private val screenHeight = device.getDisplayMode().getHeight();
+
   def saveImage(im: java.awt.image.BufferedImage, fileName: String, format: String): Unit = {
     logger.debug(s"try to save image to file with name '${fileName}' and '${format}' format")
     javax.imageio.ImageIO.write(im, format, new java.io.File(fileName))
@@ -37,14 +41,12 @@ object Output {
   /** visualization image through frame */
   def visible(img: java.awt.image.BufferedImage, title: String) {
     logger.debug(s"visualization image through frame with title='${title}'")
-    val imgToVisible =
-      if (img.getHeight > 800) image.GeomAffineTransform.scale(img, 800.0 / img.getHeight)
-      else img
-    val icon = new ImageIcon(imgToVisible)
+    val icon = new ImageIcon(img)
     val label = new JLabel(icon)
+    val scroller = new JScrollPane(label)
 
     val frame = new JFrame
-    frame.getContentPane().add(label, java.awt.BorderLayout.CENTER)
+    frame.getContentPane().add(scroller, java.awt.BorderLayout.CENTER)
     frame.pack()
     frame.setName(title)
     frame.setTitle(title)
