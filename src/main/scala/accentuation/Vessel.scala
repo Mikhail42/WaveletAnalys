@@ -7,10 +7,13 @@ import image._
 class Vessel(mat: MInt, d1: Int, s: Int, stepTheta: Int = 10, border: Int = 128) {
   val logger = com.typesafe.scalalogging.Logger(getClass)
 
+  /** NOTE: In this class, I use Array, so array has a fastest method apply(i: Int)
+   */
+
   private val m = mat.length;
   private val n = mat(0).length
 
-  private val thetas = (0 until 180 by stepTheta)
+  private val thetas = (0 until 180 by stepTheta).toArray
 
   private val (lr1, rr1) = (d1 / 2, d1 / 2)
   private val (lr2, rr2) = (lr1 + 2, rr1 + 2)
@@ -44,41 +47,57 @@ class Vessel(mat: MInt, d1: Int, s: Int, stepTheta: Int = 10, border: Int = 128)
   }
 
   // 2*s*m*n
-  //val matUpd = preprocessing.Illumination.illumination(mat, s)
+  //private lazy val matUpd = preprocessing.Illumination.illumination(mat, s)
+  //preprocessing.Inverse.inverse(matUpd)
 
-  def locMask(i: Int, j: Int, thetaInd: Int): Int = {
+  private def localMask(i: Int, j: Int, thetaInd: Int): Int = {
     var sum: Int = 0
     for (rInd <- 0 until rs.length)
       sum += mat(i + rdy(rInd)(thetaInd))(j + rdx(rInd)(thetaInd)) * core(rInd)
     sum
   }
 
-  def accent: (MInt, MInt, MInt) = {
+  def accentuation(): (MInt, MInt, MInt) = {
     logger.debug(s"accentuation vessel on matix started with diameter=${d1}")
 
     val resTranform: MInt = createMInt(m, n)
-    //val trueDir: MInt = createMInt(m, n)
+    val trueDir: MInt = createMInt(m, n)
+    // 'par' is used for speedup in 2-3 times on my PC
+    // My PC characters: 8 cores, Intel Core i7, 8GB RAM, GNU/Linux Debian 9. Current scalaVersion: 2.12.2
     (lr2 until m - rr2).par.map {
       i =>
         for (j <- lr2 until n - rr2) {
-          val transAndDir = maxSearch(i, j)
-          resTranform(i)(j) = if (transAndDir._1 < 128) 0 else 255
-          //trueDir(i)(j) = transAndDir._2
+          val (trans, dir) = maxSearch(i, j)
+          resTranform(i)(j) = if (trans < 128) 0 else 255
+          trueDir(i)(j) = dir
         }
     }
 
-    //val res = resTranform.map { _.map { _.toInt } }
-    //postprocessing.Mediate.mediate(trueDir, res)
+    val res = resTranform.map { _.map { _.toInt } }
+    postprocessing.Mediate.mediate(trueDir, res)
 
-    (resTranform, null, null)
+    (resTranform, trueDir, res)
   }
 
   private def maxSearch(i: Int, j: Int): (Int, Int) = {
     var mx = Int.MinValue
     var dir = 0
     for (thetaInd <- 0 until thetas.length) {
-      val lm = locMask(i, j, thetaInd)
+      val lm = localMask(i, j, thetaInd)
       if (mx < lm) {
+        mx = lm
+        dir = thetas(thetaInd)
+      }
+    }
+    (mx, dir)
+  }
+
+  private def minSearch(i: Int, j: Int): (Int, Int) = {
+    var mx = Int.MaxValue
+    var dir = 0
+    for (thetaInd <- 0 until thetas.length) {
+      val lm = localMask(i, j, thetaInd)
+      if (mx > lm) {
         mx = lm
         dir = thetas(thetaInd)
       }

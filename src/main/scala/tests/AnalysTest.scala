@@ -16,10 +16,9 @@ object AnalysTest {
     val img = Input.uploadImage(fileName)
     val mat = image.Operation.getColorsComponents(img, 2)
     for (d1 <- 14 to 14; s <- 9 to 9) {
-      val ves = new accentuation.Vessel(mat, d1, s)
-      val res = ves.accent
-      //val res = accentuation.Vessel.accent(mat, d1, s, "MAX")
-      Output.visible(res._1, s"output image, diameter=${d1}, s=${s}")
+      val vessel = new accentuation.Vessel(mat, d1, s)
+      val res = vessel.accentuation()
+      Output.visible(res._1, s"output image 1, diameter=${d1}, s=${s}")
     }
   }
 
