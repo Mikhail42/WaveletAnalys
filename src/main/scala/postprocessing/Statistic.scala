@@ -47,7 +47,7 @@ object Statistic {
   /** X => EX^2-(EX)^2 */
   def disp(mat: M, aver: T): T = {
     logger.trace(s"dispertion of matrix started with averange=${aver}")
-    mat.map { ar => disp(ar, aver) }.sum / mat.length - aver * aver
+    mat.map { ar => disp(ar, aver) }.sum / mat.length
   }
 
   /** X => EX */

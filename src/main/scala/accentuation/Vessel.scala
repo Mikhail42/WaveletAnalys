@@ -8,6 +8,8 @@ object Vessel {
   val logger = com.typesafe.scalalogging.Logger(getClass)
 
   val stepTheta = 10
+  val thetas = (0 until 180 by stepTheta)
+  logger.trace(s"thetas length is ${thetas.length}")
   val border = 128
 
   def accent(img: BI, r: Int, s: Int, extr: String): (BI, BI, BI) = {
@@ -42,10 +44,23 @@ object Vessel {
         else antiL
     }
 
-    def locMask(i: Int, j: Int, theta: Int): Int = {
+    val rs = (-lr2 to rr2)
+    logger.debug(s"rs.length * thetas.length is ${thetas.length * rs.length}")
+
+    val rdy = Array.ofDim[Int](rs.length, thetas.length)
+    val rdx = Array.ofDim[Int](rs.length, thetas.length)
+    for (i <- 0 until rs.length) {
+      val r = rs(i)
+      for (j <- 0 until thetas.length) {
+        rdy(i)(j) = deltaY(r, thetas(j))
+        rdx(i)(j) = deltaX(r, thetas(j))
+      }
+    }
+
+    def locMask(i: Int, j: Int, thetaInd: Int): Int = {
       var sum: Int = 0
-      for (r <- -lr2 to rr2)
-        sum += mat(i + deltaY(r, theta))(j + deltaX(r, theta)) * core(r + lr2)
+      for (rInd <- 0 until rs.length)
+        sum += mat(i + rdy(rInd)(thetaInd))(j + rdx(rInd)(thetaInd)) * core(rInd)
       sum
     }
 
@@ -76,11 +91,11 @@ object Vessel {
   private def maxSearch(i: Int, j: Int, locMask: Int => Int): (Int, Int) = {
     var mx = Int.MinValue
     var dir = 0
-    for (theta <- 0 until 180 by stepTheta) {
-      val lm = locMask(theta)
+    for (thetaInd <- 0 until thetas.length) {
+      val lm = locMask(thetaInd)
       if (mx < lm) {
         mx = lm
-        dir = theta
+        dir = thetas(thetaInd)
       }
     }
     (mx, dir)
@@ -89,11 +104,11 @@ object Vessel {
   private def minSearch(i: Int, j: Int, locMask: Int => Int): (Int, Int) = {
     var mn = Int.MaxValue
     var dir = 0
-    for (theta <- 0 until 180 by stepTheta) {
-      val lm = locMask(theta)
+    for (thetaInd <- 0 until thetas.length) {
+      val lm = locMask(thetaInd)
       if (mn > lm) {
         mn = lm
-        dir = theta
+        dir = thetas(thetaInd)
       }
     }
     (mn, dir)
