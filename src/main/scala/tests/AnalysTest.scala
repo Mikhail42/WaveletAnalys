@@ -13,11 +13,13 @@ object AnalysTest {
   def vesselSegmentTest {
     val fileName = dir + forVessel
     logger.info(s"vessel assentuation test started for ${fileName}")
-    val img = Input.uploadSubimage(fileName)
+    val img = Input.uploadImage(fileName)
     val mat = image.Operation.getColorsComponents(img, 2)
-    for (r <- 13 to 14; s <- 2 to 2) {
-      val res = accentuation.Vessel.accent(mat, r, s, "MAX")
-      Output.visible(res._1, s"out ${r} ${s}")
+    for (d1 <- 14 to 14; s <- 9 to 9) {
+      val ves = new accentuation.Vessel(mat, d1, s)
+      val res = ves.accent
+      //val res = accentuation.Vessel.accent(mat, d1, s, "MAX")
+      Output.visible(res._1, s"output image, diameter=${d1}, s=${s}")
     }
   }
 
