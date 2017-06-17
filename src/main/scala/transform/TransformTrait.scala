@@ -19,7 +19,7 @@ trait TransformTrait {
    *  inheritance.
    */
   def reverse1D(arrToReverse: A): A = {
-    logger.info(s"reverse1D")
+    logger.trace(s"reverse1D")
     val n = arrToReverse.length
     if (!isBinary(n))
       throw new BinaryAmountException("arrToReverse", n)
@@ -34,7 +34,7 @@ trait TransformTrait {
    *  inheritance.
    */
   def forward1D(arrToForward: A): A = {
-    logger.info(s"forward1D")
+    logger.trace(s"forward1D")
     val n = arrToForward.length
     if (!isBinary(n))
       throw new BinaryAmountException("arrToForward", n)

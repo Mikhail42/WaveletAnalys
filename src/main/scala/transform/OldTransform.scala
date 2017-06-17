@@ -13,7 +13,7 @@ object OldTransform {
    *  @param transf -- some (wavelet) transform
    */
   def wavelet(img: BI, transf: (M, T) => (M, MInt), nameWavelet: String, a: T): (BI, BI, BI) = {
-    logger.info(s"${nameWavelet} transform of image with a=${a}")
+    logger.debug(s"${nameWavelet} transform of image with a=${a}")
     val mat: M = getColorsComponents(img, 2).map { _.map { _.toDouble } }
     val m = mat.length; val n = mat(0).length
     val (res, dir) = transf(mat, a)

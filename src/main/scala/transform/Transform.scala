@@ -7,7 +7,7 @@ object Transform {
   val logger = com.typesafe.scalalogging.Logger(getClass)
 
   def DaubechiesForwardImage(img: BI, order: Int, trans: String): BI = {
-    logger.info(s"DaubechiesForwardImage of image")
+    logger.trace(s"DaubechiesForwardImage of image")
     val mat: M =
       mapIT(Operation.getColorsComponents(img, 2), (x: Int) => x.toDouble)
     val g: MInt =
@@ -19,7 +19,7 @@ object Transform {
   /** @param ord -- order of Daubechies
    */
   def DaubechiesForwardImageWithRotate(img: BI, ord: Int = 1): (BI, BI) = {
-    logger.info(s"DaubechiesForwardImage of image with rotate")
+    logger.debug(s"DaubechiesForwardImage of image with rotate with order=${ord}")
     import transform.DTransform._
     import image.Operation._
     val m = img.getHeight; val n = img.getWidth

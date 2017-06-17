@@ -9,7 +9,7 @@ class WaveletPacketTransform(wavelet: WaveletTransformTrait) extends TransformTr
   override val logger = com.typesafe.scalalogging.Logger(getClass)
 
   override def reverse1D(arrToReverse: A, level: Int): A = {
-    logger.info(s"reverse1D")
+    logger.trace(s"reverse1D")
     val n = arrToReverse.length
     val arrTime = arrToReverse.clone()
     val steps = log2(n)
@@ -30,7 +30,7 @@ class WaveletPacketTransform(wavelet: WaveletTransformTrait) extends TransformTr
   }
 
   override def forward1D(arrTime: A, level: Int): A = {
-    logger.info(s"forward1D")
+    logger.trace(s"forward1D")
     val n = arrTime.length
     if (!isBinary(n))
       throw new BinaryAmountException(s"arrTime", n)

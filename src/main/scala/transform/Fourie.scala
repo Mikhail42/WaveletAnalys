@@ -28,7 +28,7 @@ object Fourie {
    */
   @Deprecated
   def createOscillation(samplingRate: Int, noOfOscillations: Int, fun: T => T): A = {
-    logger.info(s"fourie transform")
+    logger.trace(s"fourie transform")
     val sR = max(samplingRate, 2)
     val noOfOsc = max(noOfOscillations, 2)
     val argMulti = 2 * Pi * noOfOsc / sR
