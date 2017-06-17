@@ -11,7 +11,7 @@ object Vessel {
   val border = 128
 
   def accent(img: BI, r: Int, s: Int, extr: String): (BI, BI, BI) = {
-    logger.info(s"accentuation vessel on image started with radius=${r} and s=${s}, ${extr}")
+    logger.debug(s"accentuation vessel on image started with radius=${r} and s=${s}, ${extr}")
 
     val (vesselM, directMInt, thinVesselMat): (MInt, MInt, MInt) =
       accent(imgToMInt(img), r, s, extr)
@@ -23,14 +23,13 @@ object Vessel {
   }
 
   def accent(mat: MInt, d1: Int, s: Int, extr: String): (MInt, MInt, MInt) = {
-    logger.info(s"accentuation vessel on matix started with radius ${d1} and s=${s}, ${extr}")
+    logger.debug(s"accentuation vessel on matix started with diameter=${d1}, ${extr}")
 
     val matUpd = preprocessing.Illumination.illumination(mat, s)
+    logger.trace(s"illumination sucessful compeled")
 
     val m = mat.length; val n = mat(0).length
-    val (lr1, rr1) =
-      if (d1 % 2 == 0) (d1 / 2, d1 / 2)
-      else (d1 / 2, d1 / 2)
+    val (lr1, rr1) = (d1 / 2, d1 / 2)
 
     val (lr2, rr2) = (lr1 + 2, rr1 + 2)
     val antiL = -lr1

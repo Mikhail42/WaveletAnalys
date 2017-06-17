@@ -10,7 +10,7 @@ object Filter {
   val MIN = 0
 
   def smallFilter(img: BI, amountBorder: Int): BI = {
-    logger.info(s"smallFilter started")
+    logger.trace(s"smallFilter started")
 
     val mat = imgToMInt(img)
     val m = mat.length; val n = mat(0).length
@@ -61,7 +61,7 @@ object Filter {
   }
 
   def histogramFilterMin(img: BI): BI = {
-    logger.info(s"histogramFilterMin started")
+    logger.trace(s"histogramFilterMin started")
 
     val ind = postprocessing.Histogram.minHistogram(img)
     println(ind)
@@ -69,7 +69,7 @@ object Filter {
   }
 
   def histogramFilterMax(img: BI): BI = {
-    logger.info(s"histogramFilterMax started")
+    logger.trace(s"histogramFilterMax started")
 
     val gi = postprocessing.Histogram.histogram(img)
     val maxInd = 5 + gi.indexOf((5 until 250).map { gi(_) }.max)
@@ -86,7 +86,7 @@ object Filter {
   }
 
   def gaus(mat: MInt, r: Int, sigma: T): M = {
-    logger.info(s"gaus filter on matrix started with r=${r} and sigma=${sigma}")
+    logger.trace(s"gaus filter on matrix started with r=${r} and sigma=${sigma}")
 
     val L = sqrt(1.0 / (2 * Pi * sqr(sigma)))
     val invSigma2 = 1.0 / (2 * sqr(sigma))
@@ -109,7 +109,7 @@ object Filter {
   }
 
   def MSR(img: BI, r: Int): BI = {
-    logger.info(s"MSR of image started with r=${r}")
+    logger.debug(s"MSR of image started with r=${r}")
 
     val RGB = image.Operation.getColorsComponents(img)
     val R = RGB._1; val G = RGB._2; val B = RGB._3
@@ -119,7 +119,7 @@ object Filter {
       sumMat(i)(j) = R(i)(j) + G(i)(j) + B(i)(j)
 
     def getMSR(id: Int): M = {
-      logger.info(s"MSR of matrix started (colorId=${id})")
+      logger.debug(s"MSR of matrix started (colorId=${id})")
 
       val (mat, sigma_i) = id match {
         case 1 => (B, 15)
@@ -148,7 +148,7 @@ object Filter {
 
   /** x => MAX*(x-l)/(h-l) */
   def constrast(mat: MInt, h: Int, l: Int) {
-    logger.info(s"contrast matrix started with h=${h} and l=${l}")
+    logger.debug(s"contrast matrix started with h=${h} and l=${l}")
     val m = mat.length; val n = mat(0).length
     def toNew(x: Int) =
       if (x > h) MAX
@@ -160,7 +160,7 @@ object Filter {
 
   /** x => 255*(x-l)/(h-l) */
   def constrast(img: BI, h: Int = 200, l: Int = 50) {
-    logger.info(s"contrast image started with h=${h} and l=${l}")
+    logger.debug(s"contrast image started with h=${h} and l=${l}")
     val m = img.getHeight; val n = img.getWidth
     def toNew(x: Int) =
       if (x > h) 255
@@ -177,13 +177,15 @@ object Filter {
   }
 
   def adaptiveContrast(mat: MInt) {
-    logger.info(s"adaptiveContrast matrix started")
+    logger.trace(s"adaptiveContrast matrix started")
     val (mn, mx) = postprocessing.Statistic.minMax(mat)
+    logger.debug(s"min-max is ${(mn, mx)}")
+
     val m = mat.length; val n = mat(0).length
     def toNew(x: Int) =
       if (x > mx) MAX
       else if (x < mn) MIN
-      else MAX * (x - mn) / (mx - mn)
+      else (MAX - MIN) * (x - mn) / (mx - mn)
     for (i <- 0 until m; j <- 0 until n)
       mat(i)(j) = toNew(mat(i)(j))
   }
@@ -191,6 +193,8 @@ object Filter {
   def adaptiveContrast(mat: M) {
     logger.info(s"adaptiveContrast matrix started")
     val (mn, mx) = postprocessing.Statistic.minMax(mat)
+    logger.debug(s"min-max is ${(mn, mx)}")
+
     val c = (MAX - MIN) / (mx - mn)
     val m = mat.length; val n = mat(0).length
     def toNew(x: T): T =

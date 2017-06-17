@@ -2,7 +2,6 @@ package image
 
 import java.awt._
 import java.awt.image._
-import java.awt.geom.AffineTransform
 
 import math._
 import other.Types._

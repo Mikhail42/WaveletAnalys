@@ -7,6 +7,5 @@ object WMain {
   def main(args: Array[String]) {
     logger.info("main app started")
     other.Time.time(tests.AnalysTest.vesselSegmentTest, "Main app")
-    //other.Time.time(tests.AnalysTest.diskTest, "Main app")
   }
 }

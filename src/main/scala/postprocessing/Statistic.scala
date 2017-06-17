@@ -10,7 +10,7 @@ object Statistic {
 
   /** approximate in 2 times faster then simple min and max cuncurently */
   def minMax(mat: M) = {
-    logger.info(s"min-max of matrix started")
+    logger.trace(s"min-max of matrix started")
     var min = mat(0)(0)
     var max = mat(0)(0)
     for (str <- mat; x <- str) {
@@ -22,7 +22,7 @@ object Statistic {
 
   /** approximate in 2 times faster then simple min and max cuncurently */
   def minMax(mat: MInt) = {
-    logger.info(s"min-max of matrix started")
+    logger.trace(s"min-max of matrix started")
     var min = mat(0)(0)
     var max = mat(0)(0)
     for (str <- mat; x <- str) {
@@ -34,19 +34,22 @@ object Statistic {
 
   /** X => EX^2-(EX)^2 */
   def disp(mat: M, aver: T): T = {
-    logger.info(s"dispertion of matrix started")
+    logger.trace(s"dispertion of matrix started with averange=${aver}")
     mat.map { _.map { y => y * y }.sum }.sum /
       productSize(mat) - aver * aver
   }
 
   /** X => EX */
-  def aver(mat: M): T = mat.map { _.sum }.sum / productSize(mat)
+  def aver(mat: M): T = {
+    logger.trace(s"averange of matrix started")
+    mat.map { _.sum }.sum / productSize(mat)
+  }
 
   /** (X,Y) => E[X.*Y] - EX*EY
    *  @see {@link StatisticSpec}
    */
   def correlation(mat1: M, mat2: M): T = {
-    logger.info(s"correlation two matrix started")
+    logger.trace(s"correlation two matrix started")
     val aver1 = aver(mat1); val aver2 = aver(mat2)
     var sum: T = 0
     for (i <- 0 until mat1.length; j <- 0 until mat1(0).length)
@@ -62,7 +65,7 @@ object Statistic {
    *                simple max(y)(x), , if (!isNorm(y))&&(!isNorm(x))
    */
   def localEX(mat: M, sy: Int, sx: Int): M = {
-    logger.info(s"local meaning on matrix calculation started with sx=${sx} and sy=${sy}")
+    logger.debug(s"local meaning on matrix calculation started with sx=${sx} and sy=${sy}")
     val m = mat.length; val n = mat(0).length
     // fast sum in strings: O(h*w) operations
     val sumStr = createM(m, n)
@@ -127,7 +130,7 @@ object Statistic {
    *                simple max(y)(x), , if (!isNorm(y))&&(!isNorm(x))
    */
   def localEX(mat: MInt, sy: Int, sx: Int): MInt = {
-    logger.info(s"local meaning on matrix calculation started with sx=${sx} and sy=${sy}")
+    logger.debug(s"local meaning on matrix calculation started with sx=${sx} and sy=${sy}")
     val m = mat.length; val n = mat(0).length
     // fast sum in strings: O(h*w) operations
     val sumStr = createMInt(m, n)
@@ -189,6 +192,7 @@ object Statistic {
    *  @see @{link #localEX}
    */
   def localEX2(mat: M, sy: Int, sx: Int): M = {
+    logger.debug(s"local meaning of Matrix Sqruare Foreach started with sx=${sx} and sy=${sy}")
     val mat2 = mat.map { str => str.map { x => x * x } }
     localEX(mat2, sy, sx)
   }
@@ -198,6 +202,7 @@ object Statistic {
    *  @see @{link #localEX}
    */
   def localEX2(mat: MInt, sy: Int, sx: Int): MInt = {
+    logger.debug(s"local meaning of Matrix Sqruare Foreach started with sx=${sx} and sy=${sy}")
     val mat2: MInt = mat.map { str => str.map { x => x * x } }
     localEX(mat2, sy, sx)
   }
@@ -207,7 +212,7 @@ object Statistic {
    *  @see @{link #localEX} and @{link #localEX2}
    */
   def localDisp(mat: M, sy: Int, sx: Int): M = {
-    logger.info(s"local dispersion on matrix calculation started with sx=${sx} and sy=${sy}")
+    logger.debug(s"local dispersion on matrix calculation started with sx=${sx} and sy=${sy}")
     val ex1 = localEX(mat, sy, sx)
     val ex2 = localEX2(mat, sy, sx)
     val m = mat.length; val n = mat(0).length
@@ -222,7 +227,7 @@ object Statistic {
    *  @see @{link #localEX} and @{link #localEX2}
    */
   def localDisp(mat: MInt, sy: Int, sx: Int): MInt = {
-    logger.info(s"local dispersion on matrix calculation started with sx=${sx} and sy=${sy}")
+    logger.debug(s"local dispersion on matrix calculation started with sx=${sx} and sy=${sy}")
     val ex: MInt = localEX(mat, sy, sx)
     val ex2: MInt = localEX2(mat, sy, sx)
     val m = mat.length; val n = mat(0).length
@@ -234,7 +239,7 @@ object Statistic {
 
   /** @see #other.MathToolKit.correlation */
   def correlation(img1: BI, img2: BI, colorID: Int): T = {
-    logger.info(s"image correlation calculation started with colorId=${colorId}")
+    logger.debug(s"image correlation calculation started with colorId=${colorId}")
     val mat1 = mapIT(image.Operation.getColorsComponents(img1, colorID), (x: Int) => x.toDouble)
     val mat2 = mapIT(image.Operation.getColorsComponents(img2, colorID), (x: Int) => x.toDouble)
     val cor = postprocessing.Statistic.correlation(mat1, mat2)
@@ -243,7 +248,7 @@ object Statistic {
 
   /** @see #other.MathToolKit.disp */
   def disp(img: BI, colorID: Int): T = {
-    logger.info(s"image dispersion calculation started with colorId=${colorId}")
+    logger.debug(s"image dispersion calculation started with colorId=${colorId}")
     val mat = mapIT(image.Operation.getColorsComponents(img, colorID), (x: Int) => x.toDouble)
     val aver = postprocessing.Statistic.aver(mat)
     postprocessing.Statistic.disp(mat, aver)

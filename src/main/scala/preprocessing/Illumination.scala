@@ -8,9 +8,10 @@ object Illumination {
 
   /** x => 128*x*x/localEX2(x, s, s) */
   def illumination(mat: MInt, s: Int): MInt = {
-    logger.info(s"illumination matrix started with s=${s}")
+    logger.debug(s"illumination matrix started with halfwidth of window is ${s}")
     val m = mat.length; val n = mat(0).length
     val MX2 = postprocessing.Statistic.localEX2(mat, s, s)
+
     val res = createMInt(m, n)
     for (y <- 0 until m; x <- 0 until n)
       res(y)(x) =

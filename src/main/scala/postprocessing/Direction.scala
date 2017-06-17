@@ -17,7 +17,7 @@ object Direction {
    *  @return direction matrix
    */
   def direction(mat: MInt, R: Int = 5, steptheta: Int = 5, extr: String = "ARGMIN"): MInt = {
-    logger.info(s"earch direction matrix started with radius=${R} and stepTheta=${steptheta}, ${extr}")
+    logger.info(s"search direction matrix started with radius=${R} and stepTheta=${steptheta}, ${extr}")
 
     val m = mat.length; val n = mat(0).length
     val rs = (-R to R)

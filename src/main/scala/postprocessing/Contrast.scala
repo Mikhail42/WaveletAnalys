@@ -9,7 +9,7 @@ object Contrast {
 
   /** @return 255.0*(x-mn)/(mx-mn)) or bordered value */
   def contrast(mat: M, mn: T, mx: T): M = {
-    logger.info("contrast of matrix with max=${mx} and min=${mn}")
+    logger.debug(s"contrast of matrix with max=${mx} and min=${mn}")
 
     val c = 255.0 / (mx - mn)
     mapTT(mat,
@@ -21,7 +21,7 @@ object Contrast {
 
   /** @return 255*(x-mn)/(mx-mn)) or bordered value */
   def contrast(mat: MInt, mn: Int, mx: Int): MInt = {
-    logger.info(s"contrast of matrix with max=${mx} and min=${mn}")
+    logger.debug(s"contrast of matrix with max=${mx} and min=${mn}")
     mapII(mat,
       (x: Int) =>
         if (x < mn) 0

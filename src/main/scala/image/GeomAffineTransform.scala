@@ -4,14 +4,14 @@ import other.Types._
 import math._
 import java.awt.geom.AffineTransform
 
-object AffineTransform {
+object GeomAffineTransform {
   val logger = com.typesafe.scalalogging.Logger(getClass)
 
   /** simple rotate image on theta degree.
    *  To rotate use #rotate
    */
   private def simpleRotate(img: BI, theta: T): BI = {
-    logger.info(s"simple rotate of image with theta=${theta}")
+    logger.debug(s"simple rotate of image with theta=${theta}")
     val w = img.getWidth; val h = img.getHeight
     val angle: T = theta * Pi / 180
     val at = new AffineTransform()
@@ -27,7 +27,7 @@ object AffineTransform {
    *  resImg bigger img: (w, h)==size(img) -> (R,R)==size(resImg)
    */
   def rotate(img: BI, theta: T): BI = {
-    logger.info(s"rotate of image with theta=${theta}")
+    logger.debug(s"rotate of image with theta=${theta}")
     val resImg = simpleRotate(img, theta)
     val curW = resImg.getWidth; val curH = resImg.getHeight;
     val R = sqrt(sqr(img.getWidth) + sqr(img.getHeight)).toInt;
@@ -38,7 +38,7 @@ object AffineTransform {
    *  new image as init image: (oldW,oldH) -> (R,R)==size(img) -> (oldW,oldH)
    */
   def inverseRotate(img: BI, theta: T, oldW: Int, oldH: Int): BI = {
-    logger.info(s"inverseRotate of image with theta=${theta}")
+    logger.debug(s"inverseRotate of image with theta=${theta} and old size is ${oldW}x${oldH}")
     val resImg = simpleRotate(img, theta)
     val curW = resImg.getWidth; val curH = resImg.getHeight;
     resImg.getSubimage((curW - oldW) / 2, (curH - oldH) / 2, oldW, oldH)
@@ -78,7 +78,7 @@ object AffineTransform {
    *  }}}
    */
   def rotate(mat: M, theta: T, m: Int, n: Int): M = {
-    logger.info(s"rotate matrix on ${theta} degree")
+    logger.debug(s"rotate matrix on ${theta} degree with new size is ${2 * n}x${2 * m}")
     val angle: T = Pi * theta / 180
     val c = cos(angle); val s = sin(angle)
 
@@ -105,7 +105,7 @@ object AffineTransform {
   /** @see #rotate
    */
   def invRotate(mat: M, theta: T, m: Int, n: Int): M = {
-    logger.info(s"inverse rotate matrix on ${theta} degree")
+    logger.debug(s"inverse rotate matrix on ${theta} degree with new size is ${n}x${m}")
 
     val angle: T = Pi * theta / 180 + Pi
     val c = cos(angle); val s = sin(angle)
@@ -133,14 +133,13 @@ object AffineTransform {
 
   /** @return scaled image */
   def scale(img: BI, scale: T): BI = {
-    logger.info(s"scale image in ${scale} times")
+    logger.debug(s"scale image in ${scale} times")
 
     val newW = (img.getWidth * scale).round.toInt
     val newH = (img.getHeight * scale).round.toInt
     val res: BI = new BI(newW, newH, img.getType)
-    val graph = res.createGraphics
-    val transf = java.awt.geom.AffineTransform.getScaleInstance(scale, scale)
-    graph.drawRenderedImage(img, transf)
+    val transf = AffineTransform.getScaleInstance(scale, scale)
+    res.createGraphics.drawRenderedImage(img, transf)
     res
   }
 
@@ -149,7 +148,7 @@ object AffineTransform {
    *  @return new image on white background before transform
    */
   def affineTransform(img: BI, trans: AffineTransform, w: Int, h: Int): BI = {
-    logger.info(s"affineTransform of image")
+    logger.debug(s"affineTransform of image with new size ${2 * w}x${2 * h} and ${Input.defaultBackgroundColor} background")
     val resImg = new BI(2 * w, 2 * h, img.getType)
     val riGraphic = resImg.createGraphics()
     riGraphic.setBackground(Input.defaultBackgroundColor)

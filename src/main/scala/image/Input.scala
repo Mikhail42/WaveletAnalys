@@ -19,7 +19,7 @@ object Input {
    *  warn: visualization of the subimage
    */
   def uploadSubimage(name: String): BI = {
-    logger.info(s"try to upload subimage with name ${name}")
+    logger.debug(s"try to upload subimage with name ${name}")
 
     val img = uploadImage(name)
     val w = img.getWidth; val h = img.getHeight
@@ -32,7 +32,7 @@ object Input {
    *  @return image from file with name @name
    */
   def uploadImage(name: String): BI = {
-    logger.info(s"try to upload image with name ${name}")
+    logger.debug(s"try to upload image with name ${name}")
 
     val format = name.substring(name.lastIndexOf("."))
     if (format == "tif" || format == "tiff") uploadTiffImage(name)
@@ -40,7 +40,7 @@ object Input {
   }
 
   def uploadTiffImage(name: String): BI = {
-    logger.info(s"try to upload tiff image with name ${name}")
+    logger.debug(s"try to upload tiff image with name ${name}")
 
     val stream = new com.sun.media.jai.codec.FileSeekableStream(name)
     val params = new java.awt.image.renderable.ParameterBlock() { this.add(stream) }

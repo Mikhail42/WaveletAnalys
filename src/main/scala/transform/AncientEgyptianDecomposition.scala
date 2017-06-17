@@ -9,7 +9,7 @@ class AncientEgyptianDecomposition(wavelet: wavelets.WaveletTransformTrait) exte
   val wpTransform = new WaveletPacketTransform(wavelet)
 
   private def oneD(array1: A, fun: A => A, maxLvl: Int = 8): A = {
-    logger.info(s"one dimention transform with max level is ${maxLvl}")
+    logger.trace(s"one dimention transform with max level is ${maxLvl}")
     val n = array1.length
     val array2 = new A(n)
     var offSet = 0

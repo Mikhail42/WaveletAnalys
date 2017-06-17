@@ -25,7 +25,7 @@ object ImageTest {
    def loadTiffTest {
     val name = dir + forTiff
     val img: BI = Input.uploadTiffImage(name)
-    val resImg = image.AffineTransform.scale(img, 1000.0/img.getWidth)
+    val resImg = image.GeomAffineTransform.scale(img, 1000.0/img.getWidth)
     Output.visible(resImg, "Test load a tif image")
   }
 
@@ -47,7 +47,7 @@ object ImageTest {
 
     val inpNameMask = dir+forFullMask
     val tif: BI = Input.uploadImage(inpNameMask)
-    val tifScala: BI = image.AffineTransform.scale(tif, 600.0/tif.getWidth)
+    val tifScala: BI = image.GeomAffineTransform.scale(tif, 600.0/tif.getWidth)
     Output.saveImage(tifScala, dir+"g_mask.jpg", "jpg")
     val mask = Input.uploadImage(inpNameMask)
 
@@ -56,7 +56,7 @@ object ImageTest {
       colComps(i)(j) = colComps(i)(j) & mask.getRGB(j, i)
     val greenImg = Operation.createTiffImage(colComps)
     preprocessing.Filter.constrast(greenImg)
-    val resImg = image.AffineTransform.scale(greenImg, 600.0/greenImg.getWidth)
+    val resImg = image.GeomAffineTransform.scale(greenImg, 600.0/greenImg.getWidth)
     Output.saveImage(resImg, dir+forMaskOut, "jpg")
     Output.visible(resImg, "Mask Test")
   }

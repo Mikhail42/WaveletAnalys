@@ -6,7 +6,7 @@ object Morphology {
   val logger = com.typesafe.scalalogging.Logger(getClass)
 
   def erosion(mat: MInt, r: Int): MInt = {
-    logger.info(s"erosion matrix started with r=${r}")
+    logger.debug(s"erosion matrix started with r=${r}")
     val m = mat.length; val n = mat(0).length
     val res = createMInt(m, n)
     for (y <- r until m - r; x <- r until n - r)
@@ -21,7 +21,7 @@ object Morphology {
   }
 
   def dilation(mat: MInt, r: Int): MInt = {
-    logger.info(s"dilation matrix started with r=${r}")
+    logger.debug(s"dilation matrix started with r=${r}")
     val m = mat.length; val n = mat(0).length
     val res = createMInt(m, n)
     for (y <- r until m - r; x <- r until n - r)

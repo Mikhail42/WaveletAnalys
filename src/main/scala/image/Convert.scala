@@ -15,12 +15,12 @@ object Operation {
    *  @return all pixels as array from raster data
    */
   def getPixels(img: BufferedImage): Array[Byte] = {
-    logger.info("try to get pixels fromimage")
+    logger.trace("try to get pixels fromimage")
     img.getRaster.getDataBuffer.asInstanceOf[DataBufferByte].getData
   }
 
   def grayMatFromImage(img: BI): MInt = {
-    logger.info("try to convert gray image to matrix")
+    logger.trace("try to convert gray image to matrix")
 
     val ar = getPixels(img)
     val m = img.getHeight; val n = img.getWidth
@@ -35,7 +35,7 @@ object Operation {
   }
 
   def getColorsComponents(img: BI, colorID: Int): MInt = {
-    logger.info(s"get ${colorID}th color comonents from image")
+    logger.debug(s"get ${colorID}th color comonents from image")
 
     val n = img.getWidth; val m = img.getHeight
     val shift = (colorID - 1) * 8
@@ -61,7 +61,7 @@ object Operation {
   }
 
   def getColorsComponents(img: BI, cb: T, cg: T, cr: T): MInt = {
-    logger.info(s"get specific color comonents from image")
+    logger.debug(s"get specific color comonents from image: (b,g,r)=${(cb, cg, cr)}")
 
     val n = img.getWidth; val m = img.getHeight
     val res = createMInt(m, n)
@@ -79,16 +79,21 @@ object Operation {
 
   /** very long: 250 ms for disk image (1.jpg, 2048*1500) */
   def toGray(img: BI): BI = {
+    logger.trace("convert image to gray image")
     val resImg = new BI(img.getWidth, img.getHeight, java.awt.image.BufferedImage.TYPE_BYTE_GRAY)
     grayFilterJHLabs.filter(img, resImg)
     resImg
   }
 
   /** forall cell in mat: cell => cell.toInt.max(0).min(255) */
-  def toColorMInt(mat: M): MInt = mapTI(mat, (x: T) => x.toInt.max(0).min(255))
+  def toColorMInt(mat: M): MInt = {
+    logger.trace("convert matrix to color matrix (all components from 0 to 0xFF)")
+    mapTI(mat, (x: T) => x.toInt.max(0).min(255))
+  }
 
   /** full image's copy */
   def deepCopy(bi: BI): BI = {
+    logger.trace("deep copy image started")
     val cm: java.awt.image.ColorModel = bi.getColorModel()
     val isAlphaPremultiplied = cm.isAlphaPremultiplied()
     val raster: java.awt.image.WritableRaster = bi.copyData(null)
@@ -97,6 +102,7 @@ object Operation {
 
   /** converted image to binary (1 byte gray color) */
   def toBinary(img: BI, white: Int = 160): BI = {
+    logger.debug(s"convert image to binary with border=${white}")
     val mat = mapII(imgToMInt(img), (x: Int) => if (x < white) 0 else 255)
     Operation.createTiffImage(mat)
   }
@@ -106,7 +112,7 @@ object Operation {
    */
   @Deprecated
   def createImage(supMat: (MInt, MInt, MInt), imgType: Int): BI = {
-    logger.info(s"create image from 3 matrixs with imgType=${imgType}")
+    logger.debug(s"create image from 3 matrixs with imgType=${imgType}")
 
     val r = supMat._1; val g = supMat._2; val b = supMat._3
     val h = r.length; val w = r(0).length;
@@ -121,7 +127,8 @@ object Operation {
   }
 
   def createTiffImage(mat: MInt): BI = {
-    logger.info(s"create tiff image from int matrix")
+    logger.trace(s"create tiff image from int matrix")
+
     val m = mat.length; val n = mat(0).length
     val resImg = new BI(n, m, java.awt.image.BufferedImage.TYPE_BYTE_GRAY)
     val wr = resImg.getRaster()
@@ -131,7 +138,7 @@ object Operation {
   }
 
   def createTiffImage(mat: M): BI = {
-    logger.info(s"create tiff image from double matrix")
+    logger.trace(s"create tiff image from double matrix")
     val mat2 = mapTI(mat, (x: T) => x.round.toInt)
     createTiffImage(mat2)
   }
