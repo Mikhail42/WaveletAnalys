@@ -3,7 +3,7 @@ package transform
 import math._
 import other.Types._
 import image.Input._
-import image.Operation._
+import image.Convert._
 import image._
 
 object OldTransform {
@@ -20,9 +20,9 @@ object OldTransform {
 
     val resIntImg = res.map { _.map { _.toInt } }
     postprocessing.Mediate.mediate(dir, resIntImg)
-    val thinyImg = Operation.createTiffImage(resIntImg)
-    val dirImg = Operation.createTiffImage(dir)
-    val resImg = Operation.createTiffImage(res)
+    val thinyImg = Convert.createTiffImage(resIntImg)
+    val dirImg = Convert.createTiffImage(dir)
+    val resImg = Convert.createTiffImage(res)
     preprocessing.Filter.constrast(resImg, 140, 20)
 
     (resImg, dirImg, thinyImg)

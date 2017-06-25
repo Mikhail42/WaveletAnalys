@@ -2,6 +2,7 @@ package postprocessing
 
 import math._
 import java.awt.image._
+import scala.collection.immutable.TreeMap
 
 import other.Types._
 import other.Constants._
@@ -10,10 +11,13 @@ object Histogram {
   val logger = com.typesafe.scalalogging.Logger(getClass)
 
   def histogram(img: BI): Array[Int] = {
-    logger.trace(s"histogram calculation started")
+    logger.trace(s"histogram of image calculation started")
+    histogram(imgToMInt(img))
+  }
 
+  def histogram(mat: MInt): AInt = {
+    logger.trace(s"histogram of matrix calculation started")
     val res = new AInt(256)
-    val mat = imgToMInt(img)
     val m = mat.length; val n = mat(0).length
     for (i <- 0 until m; j <- 0 until n)
       res(mat(i)(j)) += 1

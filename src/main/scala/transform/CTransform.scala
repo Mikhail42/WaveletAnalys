@@ -3,7 +3,7 @@ package transform
 import wavelets._
 import other.Types._
 import image._
-import image.Operation._
+import image.Convert._
 import math._
 
 class CTransform(wavelet: ICWavelet, dx: Int = 4, dy: Int = 4) {

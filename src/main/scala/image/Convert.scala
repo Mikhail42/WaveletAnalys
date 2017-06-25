@@ -8,7 +8,7 @@ import java.io.File
 import javax.imageio.ImageIO
 import java.awt.image._
 
-object Operation {
+object Convert {
   val logger = com.typesafe.scalalogging.Logger(getClass)
 
   /** @param img some image
@@ -75,14 +75,17 @@ object Operation {
     res
   }
 
-  private lazy val grayFilterJHLabs = new com.jhlabs.image.GrayFilter
-
-  /** very long: 250 ms for disk image (1.jpg, 2048*1500) */
-  def toGray(img: BI): BI = {
-    logger.trace("convert image to gray image")
-    val resImg = new BI(img.getWidth, img.getHeight, java.awt.image.BufferedImage.TYPE_BYTE_GRAY)
-    grayFilterJHLabs.filter(img, resImg)
-    resImg
+  def toBinaryArray(mat: MInt): Array[Byte] = {
+    val m = mat.length; val n = mat(0).length
+    val res = Array.ofDim[Byte](m * n)
+    for (i <- 0 until m) {
+      val ind0 = i * n
+      val ar = mat(i)
+      for (j <- 0 until n) {
+        res(ind0 + j) = ar(j).toByte
+      }
+    }
+    res
   }
 
   /** forall cell in mat: cell => cell.toInt.max(0).min(255) */
@@ -104,7 +107,7 @@ object Operation {
   def toBinary(img: BI, white: Int = 160): BI = {
     logger.debug(s"convert image to binary with border=${white}")
     val mat = mapII(imgToMInt(img), (x: Int) => if (x < white) 0 else 255)
-    Operation.createTiffImage(mat)
+    Convert.createTiffImage(mat)
   }
 
   /** Let supMat == (red, green, blue) - components

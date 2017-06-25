@@ -9,10 +9,10 @@ object Transform {
   def DaubechiesForwardImage(img: BI, order: Int, trans: String): BI = {
     logger.trace(s"DaubechiesForwardImage of image")
     val mat: M =
-      mapIT(Operation.getColorsComponents(img, 2), (x: Int) => x.toDouble)
+      mapIT(Convert.getColorsComponents(img, 2), (x: Int) => x.toDouble)
     val g: MInt =
       mapTI(transform.DTransform.daubechies(mat, order, trans), (x: T) => x.toInt)
-    val resImg: BI = Operation.createTiffImage(g)
+    val resImg: BI = Convert.createTiffImage(g)
     resImg
   }
 
@@ -21,28 +21,28 @@ object Transform {
   def DaubechiesForwardImageWithRotate(img: BI, ord: Int = 1): (BI, BI) = {
     logger.debug(s"DaubechiesForwardImage of image with rotate with order=${ord}")
     import transform.DTransform._
-    import image.Operation._
+    import image.Convert._
     val m = img.getHeight; val n = img.getWidth
     val resTr = createMInt(m, n)
     val resTheta = createMInt(m, n)
     for (theta <- 0 until 180 by 10) {
       println(theta)
       val imgT: BI = image.GeomAffineTransform.rotate(img, theta)
-      val matT = image.Operation.getColorsComponents(imgT, 2).
+      val matT = image.Convert.getColorsComponents(imgT, 2).
         map { _.map { 255 - _.toDouble } }
       val gT: MInt = daubechies(matT, order = 1, transformID = "str").
         map { _.map { _.toInt } }
-      val resImgT: BI = Operation.createTiffImage(gT)
+      val resImgT: BI = Convert.createTiffImage(gT)
       val resImg: BI = image.GeomAffineTransform.inverseRotate(resImgT, -theta, img.getWidth, img.getHeight)
-      val locMat = image.Operation.getColorsComponents(resImg, 2)
+      val locMat = image.Convert.getColorsComponents(resImg, 2)
       for (i <- 0 until m; j <- 0 until n)
         if (locMat(i)(j) > resTr(i)(j)) {
           resTr(i)(j) = locMat(i)(j)
           resTheta(i)(j) = theta
         }
     }
-    val imgTr = Operation.createTiffImage(resTr)
-    val imgTheta = Operation.createTiffImage(resTheta)
+    val imgTr = Convert.createTiffImage(resTr)
+    val imgTheta = Convert.createTiffImage(resTheta)
     (imgTr, imgTheta)
   }
 
@@ -64,7 +64,7 @@ object Transform {
     def locTr1(theta: Int): M =
       cwt.transform(mat, theta, a)
     def locTr2(theta: Int): M = {
-      import Operation._
+      import Convert._
       val imgR: BI = image.GeomAffineTransform.rotate(img, theta)
       val matR: M = imgToM(imgR)
       val matTrR: MInt = mapTI(trMor(matR), (x: T) => x.toInt)
@@ -104,10 +104,10 @@ object Transform {
     }
 
     val res = resTr.map { _.map { _.toInt } }
-    val imgTr: BI = Operation.createTiffImage(res)
-    val imgTheta: BI = Operation.createTiffImage(resTheta)
+    val imgTr: BI = Convert.createTiffImage(res)
+    val imgTheta: BI = Convert.createTiffImage(resTheta)
     mediate(resTheta, res)
-    val imgTr2: BI = Operation.createTiffImage(res)
+    val imgTr2: BI = Convert.createTiffImage(res)
     (imgTr, imgTheta, imgTr2)
   }
 }

@@ -10,4 +10,6 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
 libraryDependencies += "com.sun.media" % "jai_codec" % "1.0" from "file://./lib/jai_codec.jar"
 libraryDependencies += "com.sun.media" % "jai_core" % "1.0" from "file://./lib/jai_core.jar"
-libraryDependencies += "com.jhlabs" % "filters" % "1.0" from "file://./lib/filters.jar"
+libraryDependencies += "com.jhlabs" % "filters" % "2.0.235-1"
+libraryDependencies += "net.imagej" % "ij" % "1.49c"
+

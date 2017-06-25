@@ -47,7 +47,7 @@ object Generate {
         picture(y)(x) =
           if (abs(y - A - amplit * sin(x / freq)) < 6) 255 - A
           else min(picture(y)(x), 255)
-    val gRes: MInt = Operation.toColorMInt(picture)
-    Operation.createTiffImage(gRes)
+    val gRes: MInt = Convert.toColorMInt(picture)
+    Convert.createTiffImage(gRes)
   }
 }

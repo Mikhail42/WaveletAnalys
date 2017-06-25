@@ -2,7 +2,7 @@ package accentuation
 
 import other.Types._
 import image._
-import image.Operation._
+import image.Convert._
 import math._
 
 object Disk {
@@ -32,7 +32,7 @@ object Disk {
     logger.debug(s"emphasis img started with radius ${r} and colorId=${colorId}")
     val mat = mapIT(getColorsComponents(img, colorId), toDouble)
     val resMat = emphasis(mat, r)
-    Operation.createTiffImage(resMat)
+    Convert.createTiffImage(resMat)
   }
 
   /** disks emphasis

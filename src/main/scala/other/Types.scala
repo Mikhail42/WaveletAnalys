@@ -21,8 +21,8 @@ object Types {
 
   def imgToMInt(img: BI): MInt = {
     if (img.getType != java.awt.image.BufferedImage.TYPE_BYTE_GRAY)
-      image.Operation.getColorsComponents(img, colorId)
-    else image.Operation.grayMatFromImage(img)
+      image.Convert.getColorsComponents(img, colorId)
+    else image.Convert.grayMatFromImage(img)
   }
 
   def imgToM(img: BI): M = {
@@ -30,9 +30,9 @@ object Types {
     mapIT(imgToMInt(img), toDouble(_: Int))
   }
   def intMatToImg(mat: MInt): BI =
-    image.Operation.createTiffImage(mat)
+    image.Convert.createTiffImage(mat)
 
-  def doubleMatToImg(mat: M): BI = image.Operation.createTiffImage(mat)
+  def doubleMatToImg(mat: M): BI = image.Convert.createTiffImage(mat)
 
   def sqr(a: T): T = a * a
   def sqr(a: Int): Int = a * a

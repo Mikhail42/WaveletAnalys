@@ -17,25 +17,25 @@ object Output {
 
   def saveImage(mat: MInt, fileName: String): Unit = {
     logger.debug(s"try to save int matrix as image to file with name '${fileName}'")
-    val outImg = Operation.createTiffImage(mat)
+    val outImg = Convert.createTiffImage(mat)
     saveImage(outImg, fileName, "tif")
   }
 
   def saveImage(mat: M, fileName: String): Unit = {
     logger.debug(s"try to save double matrix as image to file with name '${fileName}'")
-    saveImage(Operation.toColorMInt(mat), fileName)
+    saveImage(Convert.toColorMInt(mat), fileName)
   }
 
   /** visualization matrix through frame */
   def visible(mat: MInt, title: String) {
     logger.debug(s"visualization int matrix through frame with title='${title}'")
-    visible(image.Operation.createTiffImage(mat), title)
+    visible(image.Convert.createTiffImage(mat), title)
   }
 
   /** visualization matrix through frame */
   def visible(mat: M, title: String) {
     logger.debug(s"visualization double matrix through frame with title='${title}'")
-    visible(image.Operation.createTiffImage(mat), title)
+    visible(image.Convert.createTiffImage(mat), title)
   }
 
   /** visualization image through frame */
@@ -56,8 +56,8 @@ object Output {
 
   def visualisationAndSaveMat(mat: M, frameName: String, fileName: String) {
     logger.debug(s"try to visualisation with title='${frameName}' and save matrix to file with name '${fileName}'")
-    val gRes = Operation.toColorMInt(mat)
-    val grayImg = Operation.createTiffImage(gRes)
+    val gRes = Convert.toColorMInt(mat)
+    val grayImg = Convert.createTiffImage(gRes)
     Output.visible(grayImg, frameName)
     Output.saveImage(grayImg, fileName, Input.defaultFormat)
   }

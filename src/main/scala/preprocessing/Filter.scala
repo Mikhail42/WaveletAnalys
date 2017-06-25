@@ -65,7 +65,7 @@ object Filter {
 
     val ind = postprocessing.Histogram.minHistogram(img)
     println(ind)
-    image.Operation.toBinary(img, ind)
+    image.Convert.toBinary(img, ind)
   }
 
   def histogramFilterMax(img: BI): BI = {
@@ -111,7 +111,7 @@ object Filter {
   def MSR(img: BI, r: Int): BI = {
     logger.debug(s"MSR of image started with r=${r}")
 
-    val RGB = image.Operation.getColorsComponents(img)
+    val RGB = image.Convert.getColorsComponents(img)
     val R = RGB._1; val G = RGB._2; val B = RGB._3
     val m = R.length; val n = R(0).length
     val sumMat = createM(m, n)
@@ -143,7 +143,7 @@ object Filter {
     val resG = mapTI(getMSR(2), toInt(_))
     //  val resB = map(getMSR(1), toInt)
     //  val resR = map(getMSR(3), toInt)
-    image.Operation.createTiffImage(resG)
+    image.Convert.createTiffImage(resG)
   }
 
   /** x => MAX*(x-l)/(h-l) */

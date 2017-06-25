@@ -5,7 +5,7 @@ import other.Types._
 import math._
 import image._
 
-import image.Operation._
+import image.Convert._
 
 import Base._
 
@@ -32,7 +32,7 @@ object ImageTest {
   /** compare two gray images. 2th image is ideal, 1th -- is my result */
   def compareGrayWithTiffTest {
     val imgWT = Input.uploadImage(dir+forComp1)
-    val resWt = Operation.toBinary(imgWT)
+    val resWt = Convert.toBinary(imgWT)
 
     val imgTif: BI = Input.uploadTiffImage(dir+forComp2)
 
@@ -54,7 +54,7 @@ object ImageTest {
     val colComps = getColorsComponents(img, 0.0, 0.3, 0.7).map{_.map{255 - _}}
     for (i <- 0 until mask.getHeight; j <- 0 until mask.getWidth)
       colComps(i)(j) = colComps(i)(j) & mask.getRGB(j, i)
-    val greenImg = Operation.createTiffImage(colComps)
+    val greenImg = Convert.createTiffImage(colComps)
     preprocessing.Filter.constrast(greenImg)
     val resImg = image.GeomAffineTransform.scale(greenImg, 600.0/greenImg.getWidth)
     Output.saveImage(resImg, dir+forMaskOut, "jpg")

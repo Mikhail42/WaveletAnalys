@@ -5,7 +5,7 @@ import math._
 import other.Types._
 import transform.Transform._
 import image.Output._
-import image.Operation._
+import image.Convert._
 import Base._
 
 object DWTTest {

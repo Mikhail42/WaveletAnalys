@@ -263,8 +263,8 @@ object Statistic {
   /** @see #other.MathToolKit.correlation */
   def correlation(img1: BI, img2: BI, colorID: Int): T = {
     logger.debug(s"image correlation calculation started with colorId=${colorId}")
-    val mat1 = mapIT(image.Operation.getColorsComponents(img1, colorID), (x: Int) => x.toDouble)
-    val mat2 = mapIT(image.Operation.getColorsComponents(img2, colorID), (x: Int) => x.toDouble)
+    val mat1 = mapIT(image.Convert.getColorsComponents(img1, colorID), (x: Int) => x.toDouble)
+    val mat2 = mapIT(image.Convert.getColorsComponents(img2, colorID), (x: Int) => x.toDouble)
     val cor = postprocessing.Statistic.correlation(mat1, mat2)
     cor
   }
@@ -272,7 +272,7 @@ object Statistic {
   /** @see #other.MathToolKit.disp */
   def disp(img: BI, colorID: Int): T = {
     logger.debug(s"image dispersion calculation started with colorId=${colorId}")
-    val mat = mapIT(image.Operation.getColorsComponents(img, colorID), (x: Int) => x.toDouble)
+    val mat = mapIT(image.Convert.getColorsComponents(img, colorID), (x: Int) => x.toDouble)
     val aver = postprocessing.Statistic.aver(mat)
     postprocessing.Statistic.disp(mat, aver)
   }

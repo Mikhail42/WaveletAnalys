@@ -17,7 +17,7 @@ object Line {
   def accent(img: BI, theta: Int, r: Int): BI = {
     logger.debug(s"accentuation line on image started with radius ${r} and theta=${theta}")
     val resMat: MInt = accent(imgToMInt(img), theta, r)
-    Operation.createTiffImage(resMat)
+    Convert.createTiffImage(resMat)
   }
 
   /** @see #lineSegment(img, theta, r)

@@ -1,7 +1,7 @@
 package image
 
 import ResourcesPath._
-import Operation._
+import Convert._
 
 class OperationPerformance {
 
@@ -10,12 +10,10 @@ class OperationPerformance {
 
   import other.Time._
 
-  time(image.Operation.getPixels(forDiskImg), "upload pixels from image")
-  val grayMat = time(image.Operation.grayMatFromImage(forDiskImg), "matrix from gray image")
-  val G = time(image.Operation.getColorsComponents(forDiskImg, 2), "color components #2")
-  val RGBDisc = time(image.Operation.getColorsComponents(forDiskImg), "color components RGB")
-
-  time(toGray(forDiskImg), "image to gray")
+  time(image.Convert.getPixels(forDiskImg), "upload pixels from image")
+  val grayMat = time(image.Convert.grayMatFromImage(forDiskImg), "matrix from gray image")
+  val G = time(image.Convert.getColorsComponents(forDiskImg, 2), "color components #2")
+  val RGBDisc = time(image.Convert.getColorsComponents(forDiskImg), "color components RGB")
 
   time(toBinary(forDiskImg, 100), "image to binary")
 
@@ -23,7 +21,7 @@ class OperationPerformance {
 
   time(createTiffImage(grayMat), "create image from the matrix")
 
-  time(image.Operation.createImage(RGBDisc, forDiskImg.getType), "create image from the matrix")
+  time(image.Convert.createImage(RGBDisc, forDiskImg.getType), "create image from the matrix")
 
   time(image.GeomAffineTransform.rotate(forDiskImg, 30), "rotate image (30 deg) by java.awt.geom")
 

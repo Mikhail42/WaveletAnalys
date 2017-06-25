@@ -29,9 +29,9 @@ object Inverse {
   }
   def fullInverse(img: BI): BI = {
     logger.trace(s"full inverse image started")
-    val mats = image.Operation.getColorsComponents(img)
+    val mats = image.Convert.getColorsComponents(img)
     inverse(mats._1); inverse(mats._2); inverse(mats._3)
-    image.Operation.createImage(mats, img.getType)
+    image.Convert.createImage(mats, img.getType)
   }
 
 }

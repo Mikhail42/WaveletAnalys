@@ -11,14 +11,29 @@ object AnalysTest {
 
   /** vessels accentuation test (0 until 180 by 10 degree) */
   def vesselSegmentTest {
-    val fileName = dir + forVessel
-    logger.info(s"vessel assentuation test started for ${fileName}")
-    val img = Input.uploadImage(fileName)
-    val mat = image.Operation.getColorsComponents(img, 2)
-    for (d1 <- 14 to 14; s <- 9 to 9) {
-      val vessel = new accentuation.Vessel(mat, d1, s)
+    val fileName1 = dir + forVessel
+    val fileName2 = dir + forTiff
+    logger.info(s"vessel assentuation test started for ${fileName1}")
+    val img1 = Input.uploadSubimage(fileName1)
+
+    val img2NotBinary = Input.uploadSubimage(fileName2)
+    val mat1 = Convert.getColorsComponents(img1, 2)
+    val mat2 = Convert.getColorsComponents(img2NotBinary, 2)
+    //val mat1 = preprocessing.Illumination.illumination(mat1Old, 10)
+
+    val s = 10; val d1 = 14
+    for (d1 <- 2 to 20 by 2) {
+      val vessel = new accentuation.Vessel(mat1, d1)
       val res = vessel.accentuation()
-      Output.visible(res._1, s"output image 1, diameter=${d1}, s=${s}")
+
+      val (erWhite, erBlack) = postprocessing.Compare.compareBinaryMatrix(res._1, mat2)
+
+      def errorPercent(er: T): Int = (er * 100).round.toInt
+      val erWhitePerc = errorPercent(erWhite); val erBlackPerc = errorPercent(erBlack)
+      //if (erWhitePerc < 97 && erBlackPerc < 10) {
+      logger.info(s"d1 = ${d1}, s=${s}, error white is ${erWhitePerc}%, error black is ${erBlackPerc}%")
+      image.Output.visible(res._1, s"best ${d1}")
+      //}
     }
   }
 
