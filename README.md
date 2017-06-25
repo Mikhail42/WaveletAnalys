@@ -9,7 +9,7 @@ License of this code is MIT License.
 You can't distrubute resources folder and my pdf files. Use it folder only for test this program. Use my pdf files only for understand this project.
 
 <h2>Compiling</h2>
-I used Scala IDE (current version: 4.6) and Scala (current version: 2.12.2). If you use Scala 2.11 and down, you can use '-optimise' parameter. You can use also Intellij Idea or Netbeans with Scala plugin. For build this app, use <b>sbt</b> (current version: 0.13.15): </b>sbt package</b> and <b>sbt run</b>.
+I used Scala IDE (current version: 4.6) and Scala (current version: 2.12.2). If you use Scala 2.11 and down, you can use '-optimise' parameter. You can use also Intellij Idea or Netbeans with Scala plugin. For build this app, use <b>sbt</b> (current version: 0.13.15): <b>sbt package</b> and <b>sbt run</b>. If you have problem with jai_*.jar, add jars from lib folder. 
 
 <h2>Debug</h2>
 For logs, use program arguments
