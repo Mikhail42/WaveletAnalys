@@ -4,8 +4,6 @@ class BinaryTreeSpec extends org.scalatest.FlatSpec {
   val logger = com.typesafe.scalalogging.Logger(getClass)
   val hist: NonEmptyTree = ImageHistogramTree()
 
-  logger.debug(s"ImageHistogramTree() is ${hist}")
-
   "addRecursive(2, 1)" should "((3), 2, (1)" in {
     assert(ImageHistogramTree.addRecursive(2, 1).equals(NonEmptyTree(2, NonEmptyTree(3), NonEmptyTree(1), 1)))
   }
@@ -20,26 +18,14 @@ class BinaryTreeSpec extends org.scalatest.FlatSpec {
       NonEmptyTree(2, NonEmptyTree(3), NonEmptyTree(1), 1), 1)))
   }
 
+  logger.debug(s"ImageHistogramTree() is ${hist}")
+
   "ImageHistogramTree().deep" should "9" in {
     assert(hist.deep == 9)
   }
 
   "ImageHistogramTree().length" should "256" in {
     assert(hist.count == 256)
-  }
-
-  "(., 128, .) += 64" should "(., 128, (., 64, .))" in {
-    assert(EmptyTree.equals(EmptyTree))
-    assert(NonEmptyTree(128).+=(64).equals(NonEmptyTree(128, EmptyTree, NonEmptyTree(64), 1)))
-    assert(NonEmptyTree(128).+=(64).+=(96)
-      .equals(
-        NonEmptyTree(128,
-          EmptyTree, NonEmptyTree(64,
-            NonEmptyTree(96), EmptyTree, 1), 1)))
-  }
-
-  "NonEmptyTree(128).+=(64).+=(96).+=(1))" should "(., 128, ((., 96, .), 64, (., 1, .)))" in {
-    NonEmptyTree(128).+=(64).+=(96).+=(1).toString == "(., 128, ((., 96, .), 64, (., 1, .)))"
   }
 
   val n = 3504 * 2336

@@ -94,8 +94,7 @@ case class NonEmptyTree(val data: Int, private var left: BinaryTree, private var
   override def toList: List[Int] = left.toList ::: Array.fill[Int](reCount)(data).toList ::: right.toList
 
   override def equals(a: Any) =
-    a.isInstanceOf[NonEmptyTree] && (toList equals a.asInstanceOf[NonEmptyTree].toList) ||
-      a == EmptyTree && (toList equals EmptyTree.toList)
+    a.isInstanceOf[NonEmptyTree] && (toList equals a.asInstanceOf[NonEmptyTree].toList)
 
   override def toString = "(" + left + ", " + data + (if (reCount != 1) "re" + reCount else "") + ", " + right + ")"
 }
